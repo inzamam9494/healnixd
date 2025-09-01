@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
 
 Widget authButton({required String text, required VoidCallback onPressed}) {
-  return CupertinoButton(
-    color: const Color(0xFF4CAF91),
-    borderRadius: BorderRadius.circular(8.0),
-    onPressed: onPressed,
-    child: Text(
-      text,
-      style: const TextStyle(
-        fontSize: 16.0,
-        fontWeight: FontWeight.bold,
+  return Container(
+    width: double.infinity,
+    child: CupertinoButton(
+      color: const Color(0xFF4188E3),
+      borderRadius: BorderRadius.circular(16.0),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Color(0xFFECECEC),
+          fontSize: 22.0,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
   );

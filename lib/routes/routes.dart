@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:healnixd/screens/auth/splash_screen.dart';
 
 class ApplicationRoutes {
   static const String splashScreen = '/';
@@ -10,6 +11,7 @@ class ApplicationRoutes {
   static const String profileScreen = '/profile';
 
   static List<GetPage>? getApplicationPages() => [
-    // GetPage(name: '', page: () => const Placeholder()),
+    GetPage(name: splashScreen, page: () => const SplashScreen()),
+    GetPa
   ];
 }

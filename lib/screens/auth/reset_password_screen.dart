@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:healnixd/components/custom_texts.dart';
 
 import '../../components/custom_Text_field.dart';
 import '../../components/custom_buttons.dart';
@@ -9,17 +11,17 @@ class ResetPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
-      ),
+      appBar: AppBar(leading: Icon(Icons.arrow_back_ios, color: Colors.black)),
       body: Container(
+        margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("New Password"),
+            authHeadingText(text: "New Password"),
             CustomTextField(),
-            Text("Confirm Password"),
+            authHeadingText(text: "Confirm Password"),
             CustomTextField(),
-            authButton(text: "Reset Password", onPressed: (){})
+            authButton(text: "Reset Password", onPressed: () {}).marginOnly(top: 50.0),
           ],
         ),
       ),
