@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
       appBar: AppBar(
         title: appBarText(text: 'Log In'),
         centerTitle: true,
-        leading: Icon(Icons.arrow_back_ios),
+        leading: IconButton(icon: Icon( Icons.arrow_back_ios), onPressed: () { Get.back(); },),
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),

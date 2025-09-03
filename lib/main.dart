@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:healnixd/screens/auth/reset_password_screen.dart';
-import 'package:healnixd/screens/auth/splash_screen.dart';
+import 'package:healnixd/routes/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,8 +19,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: SplashScreen(),
         debugShowCheckedModeBanner: false,
+        initialRoute: ApplicationRoutes.splashScreen,
+        getPages: ApplicationRoutes.getApplicationPages(),
       ),
     );
   }
