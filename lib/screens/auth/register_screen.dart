@@ -16,7 +16,7 @@ class RegisterScreen extends StatelessWidget {
       appBar: AppBar(
         title: appBarText(text: "Create account"),
         centerTitle: true,
-        leading: Icon(Icons.arrow_back_ios),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () { Get.back(); },),
       ),
       body: Container(
         margin: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),

@@ -11,7 +11,7 @@ class ResetPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: Icon(Icons.arrow_back_ios, color: Colors.black)),
+      appBar: AppBar( leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () { Get.back(); },),),
       body: Container(
         margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
         child: Column(

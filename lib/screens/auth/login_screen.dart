@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healnixd/components/custom_texts.dart';
+import 'package:healnixd/routes/routes.dart';
 import 'package:healnixd/style/text_style.dart';
 
 import '../../components/custom_Text_field.dart';
@@ -37,17 +38,24 @@ class LoginScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      "Forgot Password",
-                      style: AppTextStyles.kSmall10RegularTextStyle.copyWith(
-                        color: Colors.blue,
-                      ),
-                    ).marginOnly(top: 5),
+                    InkWell(
+                      onTap: (){
+                        Get.toNamed(ApplicationRoutes.forgetPasswordScreen);
+                      },
+                      child: Text(
+                        "Forgot Password",
+                        style: AppTextStyles.kSmall10RegularTextStyle.copyWith(
+                          color: Colors.blue,
+                        ),
+                      ).marginOnly(top: 5),
+                    ),
                   ],
                 ),
                 authButton(
                   text: "Login",
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed(ApplicationRoutes.homeScreen);
+                  },
                 ).marginOnly(top: 70.0, bottom: 20.0),
                 SizedBox(
                   width: double.infinity,
@@ -93,7 +101,8 @@ class LoginScreen extends StatelessWidget {
                             ..onTap = () {
                               print(
                                 "Sign up clicked!",
-                              ); // 👈 Navigate or do something
+                              );
+                              Get.toNamed(ApplicationRoutes.registerScreen);
                             },
                         ),
                       ],

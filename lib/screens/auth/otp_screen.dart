@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healnixd/components/custom_buttons.dart';
 import 'package:healnixd/components/custom_texts.dart';
+import 'package:healnixd/routes/routes.dart';
 
 import '../../components/custom_Text_field.dart';
 
@@ -14,7 +15,7 @@ class OtpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.arrow_back_ios),
+        leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () { Get.back(); },),
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
@@ -33,7 +34,9 @@ class OtpScreen extends StatelessWidget {
                 }),
               ),
             ),
-            authButton(text: "Verify", onPressed: () {}).marginOnly(top: 20.0),
+            authButton(text: "Verify", onPressed: () {
+              Get.toNamed(ApplicationRoutes.resetPasswordScreen);
+            }).marginOnly(top: 20.0),
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(

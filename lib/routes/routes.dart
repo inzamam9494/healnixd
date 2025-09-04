@@ -5,6 +5,7 @@ import 'package:healnixd/screens/auth/otp_screen.dart';
 import 'package:healnixd/screens/auth/register_screen.dart';
 import 'package:healnixd/screens/auth/reset_password_screen.dart';
 import 'package:healnixd/screens/auth/splash_screen.dart';
+import 'package:healnixd/screens/home/home_screen.dart';
 
 class ApplicationRoutes {
   static const String splashScreen = '/';
@@ -25,6 +26,7 @@ class ApplicationRoutes {
     GetPage(name: otpVerificationScreen, page: () => const OtpScreen()),
     GetPage(name: resetPasswordScreen, page: () => const ResetPasswordScreen()),
     GetPage(name: registerScreen, page: () => const RegisterScreen()),
+    GetPage(name: homeScreen, page: () => const HomeScreen()),
 
   ];
 }
