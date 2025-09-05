@@ -54,7 +54,7 @@ class LoginScreen extends StatelessWidget {
                 authButton(
                   text: "Login",
                   onPressed: () {
-                    Get.toNamed(ApplicationRoutes.homeScreen);
+                    Get.toNamed(ApplicationRoutes.bottomNavigationMenu);
                   },
                 ).marginOnly(top: 70.0, bottom: 20.0),
                 SizedBox(
