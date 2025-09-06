@@ -5,6 +5,7 @@ import 'package:healnixd/screens/auth/otp_screen.dart';
 import 'package:healnixd/screens/auth/register_screen.dart';
 import 'package:healnixd/screens/auth/reset_password_screen.dart';
 import 'package:healnixd/screens/auth/splash_screen.dart';
+import 'package:healnixd/screens/bottom_bar/bindings/bottom_nav_binding.dart';
 import 'package:healnixd/screens/bottom_bar/bottom_navigation_menu.dart';
 import 'package:healnixd/screens/home/home_screen.dart';
 
@@ -24,12 +25,18 @@ class ApplicationRoutes {
   static List<GetPage>? getApplicationPages() => [
     GetPage(name: splashScreen, page: () => const SplashScreen()),
     GetPage(name: loginScreen, page: () => const LoginScreen()),
-    GetPage(name: forgetPasswordScreen, page: () => const ForgetPasswordScreen()),
+    GetPage(
+      name: forgetPasswordScreen,
+      page: () => const ForgetPasswordScreen(),
+    ),
     GetPage(name: otpVerificationScreen, page: () => const OtpScreen()),
     GetPage(name: resetPasswordScreen, page: () => const ResetPasswordScreen()),
     GetPage(name: registerScreen, page: () => const RegisterScreen()),
-    GetPage(name: bottomNavigationMenu, page: () => const BottomNavigationMenu()),
+    GetPage(
+      name: bottomNavigationMenu,
+      page: () => BottomNavigationMenu(),
+      binding: BottomNavBinding(),
+    ),
     GetPage(name: homeScreen, page: () => const HomeScreen()),
-
   ];
 }

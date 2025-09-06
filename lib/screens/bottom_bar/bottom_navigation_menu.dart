@@ -1,77 +1,62 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:healnixd/screens/bottom_bar/controller/bottom_nav_controller.dart';
 
-class BottomNavigationMenu extends StatefulWidget {
+class BottomNavigationMenu extends GetView<BottomNavController> {
   const BottomNavigationMenu({super.key});
 
   @override
-  State<BottomNavigationMenu> createState() => _BottomNavigationMenuState();
-}
-
-class _BottomNavigationMenuState extends State<BottomNavigationMenu> {
-  int _selectedIndex = 0;
-
-  final List<IconData> _icons = [
-    Icons.home_outlined,
-    Icons.search,
-    Icons.calendar_today,
-    Icons.person_outline,
-  ];
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          ["Home", "Search", "Calendar", "Profile"][_selectedIndex],
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-      ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
-        child: Container(
-          margin: EdgeInsets.symmetric(vertical: 1, horizontal: 25),
-          height: 80,
-          decoration: BoxDecoration(
-            color: const Color(0xFF0D0D0D),
-            borderRadius: BorderRadius.circular(40),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 10,
-                spreadRadius: 1,
-                offset: const Offset(0, 4),
-              )
-            ],
+    return Obx(
+      () => Scaffold(
+        backgroundColor: Colors.blue.shade50,
+        bottomNavigationBar: Padding(
+          padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 52.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(80.0)),
+            child: NavigationBar(
+              backgroundColor: Colors.black,
+              destinations: [
+                _buildNavBarItem(Icons.add_home_outlined, 0),
+                _buildNavBarItem(Icons.medication_liquid_sharp, 1),
+                _buildNavBarItem(CupertinoIcons.person, 2),
+              ],
+            ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(_icons.length, (index) {
-              final isSelected = _selectedIndex == index;
+        ),
+        body: controller.screens[controller.currentIndex.value],
+      ),
+    );
+  }
 
-              return GestureDetector(
-                onTap: () {
-                  setState(() => _selectedIndex = index);
-                },
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: isSelected ? Colors.blue : Colors.transparent,
-                    border: Border.all(
-                      color: Colors.white24,
-                      width: 1.5,
-                    ),
-                  ),
-                  child: Icon(
-                    _icons[index],
-                    size: 26,
-                    color: isSelected ? Colors.white : Colors.white70,
-                  ),
-                ),
-              );
-            }),
+  Widget _buildNavBarItem(IconData icon, int index) {
+    bool isSelected = controller.currentIndex.value == index;
+
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(50)),
+      child: InkWell(
+        onTap: () => controller.currentIndex.value = index,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          margin: const EdgeInsets.all(5),
+          height: isSelected ? 100 : 100,
+          // animate size
+          width: isSelected ? 70 : 60,
+          decoration: BoxDecoration(
+            color: isSelected ? Colors.blueAccent : Colors.grey.shade900,
+            borderRadius: const BorderRadius.all(Radius.circular(50)),
+          ),
+          child: AnimatedScale(
+            scale: isSelected ? 1.2 : 1.0, // animate scale effect
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutBack,
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: isSelected ? 28 : 25, // animate icon size
+            ),
           ),
         ),
       ),
