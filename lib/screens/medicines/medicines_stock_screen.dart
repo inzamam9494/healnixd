@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:healnixd/components/custom_texts.dart';
+import 'package:healnixd/components/medicine_stock_card.dart';
 import 'package:healnixd/style/color.dart';
 import 'package:healnixd/style/text_style.dart';
 
@@ -88,7 +90,19 @@ class MedicinesStockScreen extends StatelessWidget {
         ),
       ),
       backgroundColor: AppColors.lightBlueBg,
-      body: Container(child: Column(children: [])),
+      body: Container(
+        child: ListView.builder(
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            return medicineStockCard(
+              medicineName: "Paracetamol",
+              medicineType: "Tablet",
+              stock: "50",
+              expiryDate: "12/2023",
+            ).marginOnly(bottom: 10, left: 10, right: 10);
+          },
+        ),
+      ),
     );
   }
 }
