@@ -33,30 +33,28 @@ class BottomNavigationMenu extends GetView<BottomNavController> {
   Widget _buildNavBarItem(IconData icon, int index) {
     bool isSelected = controller.currentIndex.value == index;
 
-    return ClipRRect(
+    return InkWell(
       borderRadius: const BorderRadius.all(Radius.circular(50)),
-      child: InkWell(
-        onTap: () => controller.currentIndex.value = index,
-        child: AnimatedContainer(
+      onTap: () => controller.currentIndex.value = index,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        margin: const EdgeInsets.all(5),
+        height: isSelected ? 100 : 100,
+        // animate size
+        width: isSelected ? 70 : 60,
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.blueAccent : Colors.grey.shade900,
+          borderRadius: const BorderRadius.all(Radius.circular(50)),
+        ),
+        child: AnimatedScale(
+          scale: isSelected ? 1.2 : 1.0, // animate scale effect
           duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-          margin: const EdgeInsets.all(5),
-          height: isSelected ? 100 : 100,
-          // animate size
-          width: isSelected ? 70 : 60,
-          decoration: BoxDecoration(
-            color: isSelected ? Colors.blueAccent : Colors.grey.shade900,
-            borderRadius: const BorderRadius.all(Radius.circular(50)),
-          ),
-          child: AnimatedScale(
-            scale: isSelected ? 1.2 : 1.0, // animate scale effect
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOutBack,
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: isSelected ? 28 : 25, // animate icon size
-            ),
+          curve: Curves.easeOutBack,
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: isSelected ? 28 : 25, // animate icon size
           ),
         ),
       ),

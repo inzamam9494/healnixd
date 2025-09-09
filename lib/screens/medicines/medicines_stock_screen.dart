@@ -95,7 +95,7 @@ class MedicinesStockScreen extends StatelessWidget {
           itemCount: 5,
           itemBuilder: (context, index) {
             return medicineStockCard(
-              medicineName: "Paracetamol",
+              medicineName: "Arnica Montana",
               medicineType: "Tablet",
               stock: "50",
               expiryDate: "12/2023",
