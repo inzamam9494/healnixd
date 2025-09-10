@@ -71,7 +71,7 @@ class AppTextStyles {
     fontSize: 12.sp, // Larger font size for desktop/laptop
   );
 
-  static TextStyle kSmall10SemiBoldTextStyle = GoogleFonts.poppins(
+    static TextStyle kSmall10SemiBoldTextStyle = GoogleFonts.poppins(
     fontWeight: FontWeight.w600,
     fontSize: 12.sp, // Larger font size for desktop/laptop
   );

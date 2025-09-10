@@ -13,7 +13,70 @@ class MedicinesStockScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Get.dialog(
+            AlertDialog(
+              title: Text(
+                'Add New Medicine',
+                style: AppTextStyles.kCaption12SemiBoldTextStyle,
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Medicine Name',
+                      border: OutlineInputBorder(),
+                    ),
+                  ).marginOnly(bottom: 10),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Medicine Type',
+                      border: OutlineInputBorder(),
+                    ),
+                  ).marginOnly(bottom: 10),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Stock',
+                      border: OutlineInputBorder(),
+                    ),
+                  ).marginOnly(bottom: 10),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Expiry Date',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Text(
+                    'Cancel',
+                    style: AppTextStyles.kBody15SemiBoldTextStyle.copyWith(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Add medicine logic here
+                    Get.back();
+                  },
+                  child: Text(
+                    'Add',
+                    style: AppTextStyles.kBody15SemiBoldTextStyle.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
         backgroundColor: Colors.blue,
         child: Icon(Icons.medication, color: Colors.white),
       ),
@@ -99,6 +162,18 @@ class MedicinesStockScreen extends StatelessWidget {
               medicineType: "Tablet",
               stock: "50",
               expiryDate: "12/2023",
+              onTapIncrease: () {
+                Get.dialog(AlertDialog());
+              },
+              onTapDecrease: () {
+                Get.dialog(AlertDialog());
+              },
+              onTapEdit: () {
+                Get.dialog(AlertDialog());
+              },
+              onTapDelete: () {
+                Get.dialog(AlertDialog());
+              },
             ).marginOnly(bottom: 10, left: 10, right: 10);
           },
         ),

@@ -9,6 +9,10 @@ Widget medicineStockCard({
   String? medicineType,
   String? stock,
   String? expiryDate,
+  VoidCallback? onTapIncrease,
+  VoidCallback? onTapDecrease,
+  VoidCallback? onTapEdit,
+  VoidCallback? onTapDelete,
 }) {
   return Card(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -111,7 +115,7 @@ Widget medicineStockCard({
                 color: Colors.green.shade100,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
-                  onTap: () {},
+                  onTap: onTapIncrease,
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Icon(Icons.arrow_circle_up, color: Colors.green, size: 30),
@@ -127,7 +131,7 @@ Widget medicineStockCard({
                 child: InkWell(
                   borderRadius: BorderRadius.circular(20),
                   highlightColor: Colors.blue,
-                  onTap: () {},
+                  onTap: onTapDecrease,
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Icon(Icons.arrow_circle_down, color: Colors.orange, size: 30),
@@ -141,7 +145,7 @@ Widget medicineStockCard({
                 ),
                 color: Colors.blue.shade100,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: onTapEdit,
                   borderRadius: BorderRadius.circular(20),
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
@@ -156,7 +160,7 @@ Widget medicineStockCard({
                 ),
                 color: Colors.red.shade100,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: onTapDelete,
                   borderRadius: BorderRadius.circular(20),
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
