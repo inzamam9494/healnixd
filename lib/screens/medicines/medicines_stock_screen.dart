@@ -16,6 +16,7 @@ class MedicinesStockScreen extends StatelessWidget {
         onPressed: () {
           Get.dialog(
             AlertDialog(
+              backgroundColor: Colors.white,
               title: Text(
                 'Add New Medicine',
                 style: AppTextStyles.kCaption12SemiBoldTextStyle,
@@ -23,56 +24,28 @@ class MedicinesStockScreen extends StatelessWidget {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Medicine Name',
-                      border: OutlineInputBorder(),
-                    ),
-                  ).marginOnly(bottom: 10),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Medicine Type',
-                      border: OutlineInputBorder(),
-                    ),
-                  ).marginOnly(bottom: 10),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Stock',
-                      border: OutlineInputBorder(),
-                    ),
-                  ).marginOnly(bottom: 10),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Expiry Date',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                  addDialogTextField(labelText : "Medicine Name"),
+                  addDialogTextField(labelText : "Current Quantity"),
+                  addDialogTextField(labelText : "Potency"),
+                  addDialogTextField(labelText : "Bottle Size"),
+                  addDialogTextField(labelText : "Expiry Date" ),
                 ],
               ),
               actions: [
-                TextButton(
+                dialogButton(
+                  text: "Cancel",
+                  color: Colors.white,
+                  textColor: Colors.grey,
                   onPressed: () {
                     Get.back();
                   },
-                  child: Text(
-                    'Cancel',
-                    style: AppTextStyles.kBody15SemiBoldTextStyle.copyWith(
-                      color: Colors.red,
-                    ),
-                  ),
                 ),
-                ElevatedButton(
+                dialogButton(
+                  text: "Add",
                   onPressed: () {
-                    // Add medicine logic here
                     Get.back();
                   },
-                  child: Text(
-                    'Add',
-                    style: AppTextStyles.kBody15SemiBoldTextStyle.copyWith(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                )
               ],
             ),
           );

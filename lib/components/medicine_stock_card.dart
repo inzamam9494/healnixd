@@ -118,7 +118,11 @@ Widget medicineStockCard({
                   onTap: onTapIncrease,
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Icon(Icons.arrow_circle_up, color: Colors.green, size: 30),
+                    child: Icon(
+                      Icons.arrow_circle_up,
+                      color: Colors.green,
+                      size: 30,
+                    ),
                   ),
                 ),
               ),
@@ -134,7 +138,11 @@ Widget medicineStockCard({
                   onTap: onTapDecrease,
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Icon(Icons.arrow_circle_down, color: Colors.orange, size: 30),
+                    child: Icon(
+                      Icons.arrow_circle_down,
+                      color: Colors.orange,
+                      size: 30,
+                    ),
                   ),
                 ),
               ),
@@ -149,7 +157,11 @@ Widget medicineStockCard({
                   borderRadius: BorderRadius.circular(20),
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Icon(Icons.mode_edit_outlined, color: Colors.blue, size: 30),
+                    child: Icon(
+                      Icons.mode_edit_outlined,
+                      color: Colors.blue,
+                      size: 30,
+                    ),
                   ),
                 ),
               ),
@@ -164,13 +176,65 @@ Widget medicineStockCard({
                   borderRadius: BorderRadius.circular(20),
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Icon(Icons.delete_outline, color: Colors.red, size: 30),
+                    child: Icon(
+                      Icons.delete_outline,
+                      color: Colors.red,
+                      size: 30,
+                    ),
                   ),
                 ),
               ),
             ],
           ),
         ],
+      ),
+    ),
+  );
+}
+
+Widget addDialogTextField({String? labelText}) {
+  return Container(
+    margin: EdgeInsets.symmetric(vertical: 4),
+    child: TextField(
+      cursorColor: Colors.blue,
+      decoration: InputDecoration(
+        labelText: labelText ?? 'Enter Text',
+        labelStyle: AppTextStyles.kSmall10RegularTextStyle.copyWith(
+          color: Colors.blue,
+        ),
+        fillColor: Colors.blue.withValues(alpha: 0.1),
+        filled: true,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(22),
+          borderSide: BorderSide(color: Colors.blue),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(22),
+          borderSide: BorderSide(color: Colors.blue),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget dialogButton({
+  String? text,
+  VoidCallback? onPressed,
+  Color? color,
+  Color? textColor,
+}) {
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      elevation: 2  ,
+      backgroundColor: color?? Colors.blue,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+    ),
+    onPressed: onPressed,
+    child: Text(
+      text ?? 'Submit',
+      style: AppTextStyles.kCaption12SemiBoldTextStyle.copyWith(
+        color: textColor?? Colors.white,
       ),
     ),
   );
