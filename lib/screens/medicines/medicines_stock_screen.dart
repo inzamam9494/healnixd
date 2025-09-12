@@ -112,7 +112,39 @@ class MedicinesStockScreen extends StatelessWidget {
                   ),
                   child: IconButton(
                     color: Colors.blue,
-                    onPressed: () {},
+                    onPressed: () {
+                      showBottomSheet(context: context, builder: (context) {
+                        return Container(
+                          padding: EdgeInsets.all(20),
+                          height: 250,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Filter By", style: AppTextStyles.kCaption12SemiBoldTextStyle,),
+                              SizedBox(height: 10,),
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: Text("Expiry Date", style: AppTextStyles.kSmall10RegularTextStyle,),
+                                trailing: Icon(Icons.arrow_forward_ios, size: 16,),
+                                onTap: (){},
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: Text("Stock Level", style: AppTextStyles.kSmall10RegularTextStyle,),
+                                trailing: Icon(Icons.arrow_forward_ios, size: 16,),
+                                onTap: (){},
+                              ),
+                              ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                title: Text("Medicine Type", style: AppTextStyles.kSmall10RegularTextStyle,),
+                                trailing: Icon(Icons.arrow_forward_ios, size: 16,),
+                                onTap: (){},
+                              ),
+                            ],
+                          ),
+                        );
+                      });
+                    },
                     icon: Icon(
                       Icons.manage_search,
                       color: Colors.white,
