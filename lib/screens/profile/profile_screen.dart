@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:healnixd/components/custom_texts.dart';
+import 'package:healnixd/components/medicine_stock_card.dart';
 import 'package:healnixd/style/color.dart';
 import 'package:healnixd/style/text_style.dart';
 
@@ -125,6 +128,30 @@ class ProfileScreen extends StatelessWidget {
                       leading: Icon(Icons.logout, color: Colors.red,),
                       title: Text('Log out', style: AppTextStyles.kSmall10SemiBoldTextStyle,),
                       trailing: Icon(CupertinoIcons.forward),
+                      onTap: (){
+                        Get.dialog(
+                        AlertDialog(
+                          title: Text("If You Really Log Out"),
+                          actions: [
+                            dialogButton(
+                              text: "Cancel",
+                              color: Colors.white,
+                              textColor: Colors.grey,
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            dialogButton(
+                              text: "Log Out",
+                              color: Colors.red,
+                              textColor: Colors.white,
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        ));
+                      },
                     ),
                   ],
                 ),
