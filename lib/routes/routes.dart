@@ -8,6 +8,7 @@ import 'package:healnixd/screens/auth/splash_screen.dart';
 import 'package:healnixd/screens/bottom_bar/bindings/bottom_nav_binding.dart';
 import 'package:healnixd/screens/bottom_bar/bottom_navigation_menu.dart';
 import 'package:healnixd/screens/home/home_screen.dart';
+import 'package:healnixd/screens/onboarding/onboarding_slider_screen.dart';
 
 class ApplicationRoutes {
   static const String splashScreen = '/';
@@ -32,6 +33,7 @@ class ApplicationRoutes {
     GetPage(name: otpVerificationScreen, page: () => const OtpScreen()),
     GetPage(name: resetPasswordScreen, page: () => const ResetPasswordScreen()),
     GetPage(name: registerScreen, page: () => const RegisterScreen()),
+    GetPage(name: onboardingScreen, page: () => const OnboardingSliderScreen()),
     GetPage(
       name: bottomNavigationMenu,
       page: () => BottomNavigationMenu(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:healnixd/components/custom_texts.dart';
+import 'package:healnixd/routes/routes.dart';
 import 'package:healnixd/style/text_style.dart';
 
 import '../../components/custom_Text_field.dart';
@@ -54,7 +55,9 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 authButton(
                   text: "Sign Up",
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed(ApplicationRoutes.onboardingScreen);
+                  },
                 ).marginOnly(top: 70.0, bottom: 20.0),
                 SizedBox(
                   width: double.infinity,

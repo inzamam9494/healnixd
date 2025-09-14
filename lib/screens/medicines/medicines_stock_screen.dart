@@ -78,7 +78,7 @@ class MedicinesStockScreen extends StatelessWidget {
                           .copyWith(color: Colors.grey),
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 18,
+                        vertical: 14,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(40),
@@ -113,7 +113,11 @@ class MedicinesStockScreen extends StatelessWidget {
                   child: IconButton(
                     color: Colors.blue,
                     onPressed: () {
-                      showBottomSheet(context: context, builder: (context) {
+                      showModalBottomSheet(
+                          context: context,
+                          isDismissible: true,
+                          enableDrag: true,
+                          builder: (context) {
                         return Container(
                           padding: EdgeInsets.all(20),
                           height: 250,
@@ -168,16 +172,102 @@ class MedicinesStockScreen extends StatelessWidget {
               stock: "50",
               expiryDate: "12/2023",
               onTapIncrease: () {
-                Get.dialog(AlertDialog());
+                Get.dialog(AlertDialog(
+                  title: Text("Increase Stock"),
+                  content: addDialogTextField(labelText : "Enter quantity to increase"),
+                  actions: [
+                    dialogButton(
+                      text: "Cancel",
+                      color: Colors.white,
+                      textColor: Colors.grey,
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                    dialogButton(
+                      text: "Increase",
+                      onPressed: () {
+                        Get.back();
+                      },
+                    )
+                  ],
+                ));
               },
               onTapDecrease: () {
-                Get.dialog(AlertDialog());
+                Get.dialog(AlertDialog(
+                  title: Text("Decrease Stock"),
+                  content: addDialogTextField(labelText : "Enter quantity to decrease"),
+                  actions: [
+                    dialogButton(
+                      text: "Cancel",
+                      color: Colors.white,
+                      textColor: Colors.grey,
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                    dialogButton(
+                      text: "Decrease",
+                      onPressed: () {
+                        Get.back();
+                      },
+                    )
+                  ],
+                ));
               },
               onTapEdit: () {
-                Get.dialog(AlertDialog());
+                Get.dialog(AlertDialog(
+                  title: Text('Edit Medicine'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      addDialogTextField(labelText : "Medicine Name"),
+                      addDialogTextField(labelText : "Current Quantity"),
+                      addDialogTextField(labelText : "Potency"),
+                      addDialogTextField(labelText : "Bottle Size"),
+                      addDialogTextField(labelText : "Expiry Date" ),
+                    ],
+                  ),
+                  actions: [
+                    dialogButton(
+                      text: "Cancel",
+                      color: Colors.white,
+                      textColor: Colors.grey,
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                    dialogButton(
+                      text: "Save",
+                      onPressed: () {
+                        Get.back();
+                      },
+                    )
+                  ],
+                ));
               },
               onTapDelete: () {
-                Get.dialog(AlertDialog());
+                Get.dialog(AlertDialog(
+                  title: Text("Are you sure you want to delete this medicine?"),
+                  actions: [
+                    dialogButton(
+                      text: "Cancel",
+                      color: Colors.white,
+                      textColor: Colors.grey,
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                    dialogButton(
+                      text: "Delete",
+                      color: Colors.red,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        Get.back();
+                      },
+                    )
+                  ],
+                ));
               },
             ).marginOnly(bottom: 10, left: 10, right: 10);
           },

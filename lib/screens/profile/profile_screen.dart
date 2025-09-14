@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:healnixd/components/custom_texts.dart';
 import 'package:healnixd/components/medicine_stock_card.dart';
 import 'package:healnixd/style/color.dart';
@@ -51,7 +50,6 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               Card(
-                margin: EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50)
                 ),
