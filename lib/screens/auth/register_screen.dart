@@ -1,5 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:healnixd/components/custom_texts.dart';
 import 'package:healnixd/routes/routes.dart';
@@ -17,7 +17,12 @@ class RegisterScreen extends StatelessWidget {
       appBar: AppBar(
         title: appBarText(text: "Create account"),
         centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () { Get.back(); },),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Get.back();
+          },
+        ),
       ),
       body: Container(
         margin: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
@@ -31,7 +36,10 @@ class RegisterScreen extends StatelessWidget {
                 authHeadingText(text: "Enter email address"),
                 CustomTextField(),
                 authHeadingText(text: "Enter new password"),
-                CustomTextField(),
+                CustomTextField(
+                    obscureText: true,
+                    suffixIcon: CupertinoIcons.eye_fill
+                ),
                 Row(
                   children: [
                     Transform.scale(
