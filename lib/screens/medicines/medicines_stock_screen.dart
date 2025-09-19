@@ -126,12 +126,17 @@ class MedicinesStockScreen extends StatelessWidget {
                             children: [
                               Text("Filter By", style: AppTextStyles.kCaption12SemiBoldTextStyle,),
                               SizedBox(height: 10,),
-                              ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                title: Text("Expiry Date", style: AppTextStyles.kSmall10RegularTextStyle,),
-                                trailing: Icon(Icons.arrow_forward_ios, size: 16,),
-                                onTap: (){},
-                              ),
+                              DropdownButton(items: [
+                                DropdownMenuItem(child: Text("100C"), value: "100C",),
+                                DropdownMenuItem(child: Text("200C"), value: "200C",),
+                                DropdownMenuItem(child: Text("200C"), value: "200C",),
+                                DropdownMenuItem(child: Text("200C"), value: "200C",),
+                                DropdownMenuItem(child: Text("200C"), value: "200C",),
+                                DropdownMenuItem(child: Text("200C"), value: "200C",),
+                                DropdownMenuItem(child: Text("200C"), value: "200C",),
+                                DropdownMenuItem(child: Text("200C"), value: "200C",),
+                                DropdownMenuItem(child: Text("200C"), value: "200C",),
+                              ], onChanged: (val){}),
                               ListTile(
                                 contentPadding: EdgeInsets.zero,
                                 title: Text("Stock Level", style: AppTextStyles.kSmall10RegularTextStyle,),
@@ -248,7 +253,9 @@ class MedicinesStockScreen extends StatelessWidget {
               },
               onTapDelete: () {
                 Get.dialog(AlertDialog(
-                  title: Text("Are you sure you want to delete this medicine?"),
+                  title: Container(
+                      child: Text("Are you sure you want to delete this medicine?")
+                  ),
                   actions: [
                     dialogButton(
                       text: "Cancel",

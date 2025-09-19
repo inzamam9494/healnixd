@@ -6,7 +6,8 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final bool? obscureText;
   final IconData? suffixIcon;
-
+  final VoidCallback? iconTap;
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     this.labelText,
@@ -14,23 +15,29 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.obscureText = false,
     this.suffixIcon,
+    this.iconTap,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         obscureText: obscureText!,
         style: AppTextStyles.kBody15RegularTextStyle.copyWith(
           color: Colors.blue,
         ),
         cursorColor: Colors.blue,
+        validator: validator,
         decoration: InputDecoration(
           labelText: labelText,
           fillColor: Colors.blue.withValues(alpha: 0.1),
           filled: true,
-          suffix: Icon(suffixIcon, color: Colors.blue,),
+          suffixIcon: IconButton(
+            onPressed: iconTap,
+            icon: Icon(suffixIcon, color: Colors.blue),
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,

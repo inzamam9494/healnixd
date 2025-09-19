@@ -195,7 +195,7 @@ Widget medicineStockCard({
 Widget addDialogTextField({String? labelText}) {
   return Container(
     margin: EdgeInsets.symmetric(vertical: 4),
-    child: TextField(
+    child: TextFormField(
       cursorColor: Colors.blue,
       decoration: InputDecoration(
         labelText: labelText ?? 'Enter Text',

@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:healnixd/screens/auth/bindings/auth_binding.dart';
 import 'package:healnixd/screens/auth/forget_password_screen.dart';
 import 'package:healnixd/screens/auth/login_screen.dart';
 import 'package:healnixd/screens/auth/otp_screen.dart';
@@ -31,8 +32,16 @@ class ApplicationRoutes {
       page: () => const ForgetPasswordScreen(),
     ),
     GetPage(name: otpVerificationScreen, page: () => const OtpScreen()),
-    GetPage(name: resetPasswordScreen, page: () => const ResetPasswordScreen()),
-    GetPage(name: registerScreen, page: () => const RegisterScreen()),
+    GetPage(
+      name: resetPasswordScreen,
+      page: () => const ResetPasswordScreen(),
+      binding: AuthBinding(),
+    ),
+    GetPage(
+      name: registerScreen,
+      page: () => const RegisterScreen(),
+      binding: AuthBinding(),
+    ),
     GetPage(name: onboardingScreen, page: () => const OnboardingSliderScreen()),
     GetPage(
       name: bottomNavigationMenu,
