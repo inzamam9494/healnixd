@@ -192,13 +192,24 @@ Widget medicineStockCard({
   );
 }
 
-Widget addDialogTextField({String? labelText}) {
+Widget addDialogTextField({
+  String? labelText,
+  TextEditingController? controller,
+  VoidCallback? iconTap,
+  IconData? suffixIcon,
+}) {
   return Container(
     margin: EdgeInsets.symmetric(vertical: 4),
     child: TextFormField(
+      controller: controller,
       cursorColor: Colors.blue,
       decoration: InputDecoration(
         labelText: labelText ?? 'Enter Text',
+        suffixIcon: IconButton(onPressed: iconTap,
+            icon: Icon(
+              suffixIcon,
+              color: Colors.blue,
+            )),
         labelStyle: AppTextStyles.kSmall10RegularTextStyle.copyWith(
           color: Colors.blue,
         ),
@@ -225,8 +236,8 @@ Widget dialogButton({
 }) {
   return ElevatedButton(
     style: ElevatedButton.styleFrom(
-      elevation: 2  ,
-      backgroundColor: color?? Colors.blue,
+      elevation: 2,
+      backgroundColor: color ?? Colors.blue,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
     ),
@@ -234,7 +245,7 @@ Widget dialogButton({
     child: Text(
       text ?? 'Submit',
       style: AppTextStyles.kCaption12SemiBoldTextStyle.copyWith(
-        color: textColor?? Colors.white,
+        color: textColor ?? Colors.white,
       ),
     ),
   );
