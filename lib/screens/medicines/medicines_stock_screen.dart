@@ -71,7 +71,7 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime(2000),
-                        lastDate: DateTime(2101),
+                        lastDate: DateTime(2100),
                       );
                       if (pickDate != null) {
                         String formattedDate =
