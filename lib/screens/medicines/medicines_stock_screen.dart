@@ -33,9 +33,9 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                   Obx(
                     () => CustomDropDown(
                       labelText: "Select Quantity",
-                      items: ["30ML", "100ML", "500ML"],
+                      items: ["${controller.bottleSize.value}"],
                       onChanged: (val) {
-                        controller.selectQuantity.value = val!;
+                        controller.bottleSize.value = val!;
                       },
                       selectedValue: controller
                           .selectQuantity
