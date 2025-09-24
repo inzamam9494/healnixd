@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:healnixd/style/text_style.dart';
 
 Widget medicineStockCard({
   String? medicineName,
   String? medicineScale,
-  String? medicineType,
-  String? stock,
+  String? medicineQuantity,
   String? expiryDate,
+  String? bottleSize,
   VoidCallback? onTapIncrease,
   VoidCallback? onTapDecrease,
   VoidCallback? onTapEdit,
@@ -38,23 +39,46 @@ Widget medicineStockCard({
                   ),
                 ],
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Colors.red.shade100,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.error_outline, color: Colors.red, size: 10),
-                    Text(
-                      "  Expired",
-                      style: AppTextStyles.kSmall8RegularTextStyle.copyWith(
-                        color: Colors.red,
-                      ),
+              Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade100,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                  ],
-                ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.error_outline, color: Colors.red, size: 10),
+                        Text(
+                          "  Expired",
+                          style: AppTextStyles.kSmall8RegularTextStyle.copyWith(
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 4),
+                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.orange.shade100,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.arrow_downward, color: Colors.orange, size: 15),
+                        Text(
+                          "Low Stock",
+                          style: AppTextStyles.kSmall8RegularTextStyle.copyWith(
+                            color: Colors.orange,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -70,7 +94,7 @@ Widget medicineStockCard({
                       style: AppTextStyles.kCaption12RegularTextStyle,
                     ),
                     Text(
-                      "20ML",
+                      medicineQuantity ?? "20ML",
                       style: AppTextStyles.kCaption12RegularTextStyle,
                     ),
                   ],
@@ -83,7 +107,7 @@ Widget medicineStockCard({
                       style: AppTextStyles.kCaption12RegularTextStyle,
                     ),
                     Text(
-                      "10/12/2023",
+                      expiryDate ?? "10/12/2023",
                       style: AppTextStyles.kCaption12RegularTextStyle,
                     ),
                   ],
@@ -96,7 +120,7 @@ Widget medicineStockCard({
                       style: AppTextStyles.kCaption12RegularTextStyle,
                     ),
                     Text(
-                      "100ML",
+                      bottleSize ?? "100ML",
                       style: AppTextStyles.kCaption12RegularTextStyle,
                     ),
                   ],
@@ -197,12 +221,15 @@ Widget addDialogTextField({
   TextEditingController? controller,
   VoidCallback? iconTap,
   IconData? suffixIcon,
+  TextInputType? keyboardType,
 }) {
   return Container(
     margin: EdgeInsets.symmetric(vertical: 4),
     child: TextFormField(
       controller: controller,
       cursorColor: Colors.blue,
+      keyboardType: keyboardType ?? TextInputType.text,
+      inputFormatters: keyboardType == TextInputType.number ? [FilteringTextInputFormatter.digitsOnly]:[],
       decoration: InputDecoration(
         labelText: labelText ?? 'Enter Text',
         suffixIcon: IconButton(onPressed: iconTap,

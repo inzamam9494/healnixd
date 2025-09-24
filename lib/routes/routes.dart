@@ -28,7 +28,11 @@ class ApplicationRoutes {
 
   static List<GetPage>? getApplicationPages() => [
     GetPage(name: splashScreen, page: () => const SplashScreen()),
-    GetPage(name: loginScreen, page: () => const LoginScreen()),
+    GetPage(
+      name: loginScreen,
+      page: () => const LoginScreen(),
+      binding: AuthBinding(),
+    ),
     GetPage(
       name: forgetPasswordScreen,
       page: () => const ForgetPasswordScreen(),

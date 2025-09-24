@@ -33,10 +33,8 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                   Obx(
                     () => CustomDropDown(
                       labelText: "Select Quantity",
-                      items: ["${controller.bottleSize.value}"],
-                      onChanged: (val) {
-                        controller.bottleSize.value = val!;
-                      },
+                      items: [(controller.bottleSize.value)],
+                      onChanged: null,
                       selectedValue: controller
                           .selectQuantity
                           .value, // make sure dropdown shows current value
@@ -58,6 +56,7 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                       items: ["30ML", "100ML", "500ML"],
                       onChanged: (val) {
                         controller.bottleSize.value = val!;
+                        controller.selectQuantity.value = val;
                       },
                       selectedValue: controller.bottleSize.value,
                     ),
@@ -94,6 +93,7 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                 dialogButton(
                   text: "Add",
                   onPressed: () {
+                    controller.addMedicine();
                     Get.back();
                   },
                 ),
@@ -177,76 +177,25 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                               children: [
                                 Text(
                                   "Filter By",
-                                  style:
-                                      AppTextStyles.kCaption12SemiBoldTextStyle,
+                                  style: AppTextStyles.kBody15SemiBoldTextStyle,
                                 ),
-                                SizedBox(height: 10),
-                                DropdownButton(
-                                  items: [
-                                    DropdownMenuItem(
-                                      child: Text("100C"),
-                                      value: "100C",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text("200C"),
-                                      value: "200C",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text("200C"),
-                                      value: "200C",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text("200C"),
-                                      value: "200C",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text("200C"),
-                                      value: "200C",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text("200C"),
-                                      value: "200C",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text("200C"),
-                                      value: "200C",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text("200C"),
-                                      value: "200C",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text("200C"),
-                                      value: "200C",
-                                    ),
-                                  ],
+                                SizedBox(height: 15),
+                                CustomDropDown(
+                                  labelText: "Filter By Potency",
+                                  items: ["30C", "200C", "1000C", "1M"],
+                                  selectedValue: "30C",
                                   onChanged: (val) {},
                                 ),
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  title: Text(
-                                    "Stock Level",
-                                    style:
-                                        AppTextStyles.kSmall10RegularTextStyle,
-                                  ),
-                                  trailing: Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 16,
-                                  ),
-                                  onTap: () {},
-                                ),
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  title: Text(
-                                    "Medicine Type",
-                                    style:
-                                        AppTextStyles.kSmall10RegularTextStyle,
-                                  ),
-                                  trailing: Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 16,
-                                  ),
-                                  onTap: () {},
+                                CustomDropDown(
+                                  labelText: "Filter By Medicine Type",
+                                  items: [
+                                    "Anica Montana",
+                                    "Belladonna",
+                                    "Chamomilla",
+                                    "Nux Vomica",
+                                  ],
+                                  selectedValue: "Anica Montana",
+                                  onChanged: (val) {},
                                 ),
                               ],
                             ),
@@ -267,132 +216,241 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
         ),
       ),
       backgroundColor: AppColors.lightBlueBg,
-      body: Container(
-        child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return medicineStockCard(
-              medicineName: "Arnica Montana",
-              medicineType: "Tablet",
-              stock: "50",
-              expiryDate: "12/2023",
-              onTapIncrease: () {
-                Get.dialog(
-                  AlertDialog(
-                    title: Text("Increase Stock"),
-                    content: addDialogTextField(
-                      labelText: "Enter quantity to increase",
-                    ),
-                    actions: [
-                      dialogButton(
-                        text: "Cancel",
-                        color: Colors.white,
-                        textColor: Colors.grey,
-                        onPressed: () {
-                          Get.back();
-                        },
+      body: StreamBuilder(
+        stream: controller.getMedicines(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator(color: Colors.blue,));
+          }
+          var medicines = snapshot.data!.docs;
+          if (medicines.isEmpty) {
+            return Center(
+              child: Text(
+                "No medicines found",
+                style: AppTextStyles.kCaption12RegularTextStyle,
+              ),
+            );
+          }
+          return Container(
+            child: ListView.builder(
+              itemCount: medicines.length,
+              itemBuilder: (context, index) {
+                var medicine = medicines[index];
+                var docId = medicine.id;
+                return medicineStockCard(
+                  medicineName: medicine['medicineName'],
+                  medicineScale: medicine['potency'],
+                  medicineQuantity: medicine['quantity'],
+                  expiryDate: medicine['expiryDate'],
+                  bottleSize: medicine['bottleSize'],
+                  onTapIncrease: () {
+                    Get.dialog(
+                      AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: Text(
+                          "Arnica Montana \n Increase Stock",
+                          style: AppTextStyles.kBody15SemiBoldTextStyle,
+                        ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            addDialogTextField(
+                              labelText: "Enter Quantity",
+                              keyboardType: TextInputType.number,
+                            ),
+                            Text(
+                              "Current Quantity: 50ML",
+                              style: AppTextStyles.kSmall8SemiBoldTextStyle,
+                            ).marginAll(2),
+                          ],
+                        ),
+                        actions: [
+                          dialogButton(
+                            text: "Cancel",
+                            color: Colors.white,
+                            textColor: Colors.grey,
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                          dialogButton(
+                            color: Colors.green,
+                            text: "Add Stock",
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        ],
                       ),
-                      dialogButton(
-                        text: "Increase",
-                        onPressed: () {
-                          Get.back();
-                        },
+                    );
+                  },
+                  onTapDecrease: () {
+                    Get.dialog(
+                      AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: Text(
+                          "Arnica Montana \n Decrease Stock",
+                          style: AppTextStyles.kBody15SemiBoldTextStyle,
+                        ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            addDialogTextField(
+                              labelText: "Enter Quantity",
+                              keyboardType: TextInputType.number,
+                            ),
+                            Text(
+                              "Current Quantity: 50ML",
+                              style: AppTextStyles.kSmall8SemiBoldTextStyle,
+                            ).marginAll(2),
+                          ],
+                        ),
+                        actions: [
+                          dialogButton(
+                            text: "Cancel",
+                            color: Colors.white,
+                            textColor: Colors.grey,
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                          dialogButton(
+                            text: "Remove Stock",
+                            color: Colors.orange,
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                );
+                    );
+                  },
+                  onTapEdit: () {
+                    Get.dialog(
+                      AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: Text(
+                          'Edit Medicine',
+                          style: AppTextStyles.kCaption12SemiBoldTextStyle,
+                        ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            addDialogTextField(
+                              labelText: "Medicine Name",
+                              controller:
+                                  controller.medicineNameController, // no Obx
+                            ),
+                            Obx(
+                              () => CustomDropDown(
+                                labelText: "Select Quantity",
+                                items: [(controller.bottleSize.value)],
+                                onChanged: null,
+                                selectedValue: controller
+                                    .selectQuantity
+                                    .value, // make sure dropdown shows current value
+                              ),
+                            ),
+                            Obx(
+                              () => CustomDropDown(
+                                labelText: "Potency",
+                                items: ["30C", "200C", "1000C", "1M"],
+                                onChanged: (val) {
+                                  controller.potency.value = val!;
+                                },
+                                selectedValue: controller.potency.value,
+                              ),
+                            ),
+                            Obx(
+                              () => CustomDropDown(
+                                labelText: "Bottle Size",
+                                items: ["30ML", "100ML", "500ML"],
+                                onChanged: (val) {
+                                  controller.bottleSize.value = val!;
+                                  controller.selectQuantity.value = val;
+                                },
+                                selectedValue: controller.bottleSize.value,
+                              ),
+                            ),
+                            addDialogTextField(
+                              controller: controller.expiryDate, // no Obx
+                              labelText: "Expiry Date",
+                              suffixIcon: Icons.calendar_month,
+                              iconTap: () async {
+                                DateTime? pickDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2100),
+                                );
+                                if (pickDate != null) {
+                                  String formattedDate =
+                                      "${pickDate.day}-${pickDate.month}-${pickDate.year}";
+                                  controller.expiryDate.text = formattedDate;
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                        actions: [
+                          dialogButton(
+                            text: "Cancel",
+                            color: Colors.white,
+                            textColor: Colors.grey,
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                          dialogButton(
+                            text: "Save",
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  onTapDelete: () {
+                    Get.dialog(
+                      AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: Text(
+                          "Delete Medicine",
+                          style: AppTextStyles.kBody15SemiBoldTextStyle,
+                        ),
+                        content: Text(
+                          "Are you sure you want to delete *Arnica Montana*?",
+                          style: AppTextStyles.kCaption12SemiBoldTextStyle,
+                        ),
+                        actions: [
+                          dialogButton(
+                            text: "Cancel",
+                            color: Colors.white,
+                            textColor: Colors.grey,
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                          dialogButton(
+                            text: "Delete",
+                            color: Colors.red,
+                            textColor: Colors.white,
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ).marginOnly(bottom: 10, left: 10, right: 10);
               },
-              onTapDecrease: () {
-                Get.dialog(
-                  AlertDialog(
-                    title: Text("Decrease Stock"),
-                    content: addDialogTextField(
-                      labelText: "Enter quantity to decrease",
-                    ),
-                    actions: [
-                      dialogButton(
-                        text: "Cancel",
-                        color: Colors.white,
-                        textColor: Colors.grey,
-                        onPressed: () {
-                          Get.back();
-                        },
-                      ),
-                      dialogButton(
-                        text: "Decrease",
-                        onPressed: () {
-                          Get.back();
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-              onTapEdit: () {
-                Get.dialog(
-                  AlertDialog(
-                    title: Text('Edit Medicine'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        addDialogTextField(labelText: "Medicine Name"),
-                        addDialogTextField(labelText: "Current Quantity"),
-                        addDialogTextField(labelText: "Potency"),
-                        addDialogTextField(labelText: "Bottle Size"),
-                        addDialogTextField(labelText: "Expiry Date"),
-                      ],
-                    ),
-                    actions: [
-                      dialogButton(
-                        text: "Cancel",
-                        color: Colors.white,
-                        textColor: Colors.grey,
-                        onPressed: () {
-                          Get.back();
-                        },
-                      ),
-                      dialogButton(
-                        text: "Save",
-                        onPressed: () {
-                          Get.back();
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-              onTapDelete: () {
-                Get.dialog(
-                  AlertDialog(
-                    title: Container(
-                      child: Text(
-                        "Are you sure you want to delete this medicine?",
-                      ),
-                    ),
-                    actions: [
-                      dialogButton(
-                        text: "Cancel",
-                        color: Colors.white,
-                        textColor: Colors.grey,
-                        onPressed: () {
-                          Get.back();
-                        },
-                      ),
-                      dialogButton(
-                        text: "Delete",
-                        color: Colors.red,
-                        textColor: Colors.white,
-                        onPressed: () {
-                          Get.back();
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ).marginOnly(bottom: 10, left: 10, right: 10);
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

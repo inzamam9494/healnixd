@@ -44,11 +44,14 @@ class CustomDropDown extends StatelessWidget {
             value: element,
             child: Text(
               element,
-              style: AppTextStyles.kCaption12RegularTextStyle,
+              style: AppTextStyles.kCaption12SemiBoldTextStyle.copyWith(color: Colors.black),
             ),
           );
         }).toList(),
         onChanged: onChanged,
+        style: AppTextStyles.kBody15RegularTextStyle.copyWith(
+          color: Colors.black,
+        ),
       ),
     );
   }
