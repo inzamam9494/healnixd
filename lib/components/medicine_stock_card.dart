@@ -32,7 +32,7 @@ Widget medicineStockCard({
                     style: AppTextStyles.kBody15SemiBoldTextStyle,
                   ),
                   Text(
-                    medicineScale ?? '  (30C)',
+                    "  ($medicineScale)" ?? '  (30C)',
                     style: AppTextStyles.kBody15SemiBoldTextStyle.copyWith(
                       color: Colors.blue,
                     ),

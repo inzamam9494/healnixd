@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healnixd/routes/routes.dart';
@@ -22,6 +23,7 @@ class LoginController extends GetxController{
       isLoading.value = true;
       try{
         await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+        debugPrint("Login UID : ${FirebaseAuth.instance.currentUser?.uid}");
         ConstToast().showSuccess("Logged in successfully");
         Get.toNamed(ApplicationRoutes.bottomNavigationMenu);
       }catch(err){

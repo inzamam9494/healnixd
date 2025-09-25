@@ -53,10 +53,11 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                   Obx(
                     () => CustomDropDown(
                       labelText: "Bottle Size",
-                      items: ["30ML", "100ML", "500ML"],
+                      items: ["30", "100", "500"],
                       onChanged: (val) {
                         controller.bottleSize.value = val!;
                         controller.selectQuantity.value = val;
+                        controller.unit.value = "ML";
                       },
                       selectedValue: controller.bottleSize.value,
                     ),
@@ -180,22 +181,119 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                                   style: AppTextStyles.kBody15SemiBoldTextStyle,
                                 ),
                                 SizedBox(height: 15),
-                                CustomDropDown(
-                                  labelText: "Filter By Potency",
-                                  items: ["30C", "200C", "1000C", "1M"],
-                                  selectedValue: "30C",
-                                  onChanged: (val) {},
+                                ListTile(
+                                  trailing: Icon(Icons.arrow_forward_ios, size: 15),
+                                  title: Text(
+                                    "Filter by Potency",
+                                    style: AppTextStyles.kCaption12RegularTextStyle,
+                                  ),
+                                  onTap: () {
+                                    Get.dialog(
+                                      AlertDialog(
+                                        backgroundColor: Colors.white,
+                                        title: Text("All Potency"),
+                                        content: CustomDropDown(
+                                          labelText: "Filter By Potency",
+                                          items: ["30C", "200C", "1000C", "1M"],
+                                          selectedValue: "30C",
+                                          onChanged: (val) {},
+                                        ),
+                                        actions: [
+                                          dialogButton(
+                                            text: "Close",
+                                            color: Colors.white,
+                                            textColor: Colors.grey,
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                          ),
+                                          dialogButton(
+                                            color: Colors.green,
+                                            text: "Apply",
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                          )
+                                        ],
+                                      )
+                                    );
+                                  },
                                 ),
-                                CustomDropDown(
-                                  labelText: "Filter By Medicine Type",
-                                  items: [
-                                    "Anica Montana",
-                                    "Belladonna",
-                                    "Chamomilla",
-                                    "Nux Vomica",
-                                  ],
-                                  selectedValue: "Anica Montana",
-                                  onChanged: (val) {},
+                                ListTile(
+                                  trailing: Icon(Icons.arrow_forward_ios, size: 15),
+                                  title: Text(
+                                    "Sorted by :",
+                                    style: AppTextStyles.kCaption12RegularTextStyle,
+                                  ),
+                                  onTap: () {
+                                    Get.dialog(
+                                      AlertDialog(
+                                        backgroundColor: Colors.white,
+                                        title: Text("Sorted By"),
+                                        content: CustomDropDown(
+                                          labelText: "Sorted by :",
+                                          items: ["Name (A-Z)", "Bottle Size", "Expiry Date"],
+                                          selectedValue: "Name (A-Z)",
+                                          onChanged: (val) {},
+                                        ),
+                                        actions: [
+                                          dialogButton(
+                                            text: "Close",
+                                            color: Colors.white,
+                                            textColor: Colors.grey,
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                          ),
+                                          dialogButton(
+                                            color: Colors.green,
+                                            text: "Apply",
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                          )
+                                        ],
+                                      )
+                                    );
+                                  },
+                                ),
+                                ListTile(
+                                  trailing: Icon(Icons.arrow_forward_ios, size: 15),
+                                  title: Text(
+                                    "Filter by Order",
+                                    style: AppTextStyles.kCaption12RegularTextStyle,
+                                  ),
+                                  onTap: () {
+                                    Get.dialog(
+                                      AlertDialog(
+                                        backgroundColor: Colors.white,
+                                        title: Text("Filter by Order"),
+                                        content: CustomDropDown(
+                                          labelText: "Filter by Order",
+                                          items: ["Ascending", "Descending"],
+                                          selectedValue: "Ascending",
+                                          onChanged: (val) {},
+                                        ),
+                                        actions: [
+                                          dialogButton(
+                                            text: "Close",
+                                            color: Colors.white,
+                                            textColor: Colors.grey,
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                          ),
+                                          dialogButton(
+                                            color: Colors.green,
+                                            text: "Apply",
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                          )
+                                        ],
+                                      )
+                                    );
+                                  },
                                 ),
                               ],
                             ),

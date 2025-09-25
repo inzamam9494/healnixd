@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:healnixd/utils/const_toast.dart';
 
 class MedicinesStockController extends GetxController {
   var medicineNameController = TextEditingController();
   var selectQuantity = "30ML".obs;
   var potency = "30C".obs;
-  var bottleSize = "30ML".obs;
+  var bottleSize = "30".obs;
+  var unit = "ML".obs;
   var expiryDate = TextEditingController();
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -17,6 +19,7 @@ class MedicinesStockController extends GetxController {
 
   // Add new medicine for this user
   Future<void> addMedicine() async {
+    print('Current userID $userId');
     try {
       await _firestore
           .collection("user")
@@ -35,13 +38,9 @@ class MedicinesStockController extends GetxController {
       selectQuantity.value = "30ML";
       potency.value = "30C";
       bottleSize.value = "30ML";
-      Get.snackbar(
-        "Success",
-        "Medicine added successfully",
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      ConstToast().showSuccess("Medicine added successfully");
     } catch (err) {
-      Get.snackbar("404 Error", err.toString());
+      ConstToast().showError(err.toString());
     }
   }
 
@@ -66,13 +65,9 @@ class MedicinesStockController extends GetxController {
       selectQuantity.value = "30ML";
       potency.value = "30C";
       bottleSize.value = "30ML";
-      Get.snackbar(
-        "Success",
-        "Medicine updated successfully",
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      ConstToast().showSuccess("Medicine updated successfully");
     } catch (err) {
-      Get.snackbar("404 Error", err.toString());
+      ConstToast().showError(err.toString());
     }
   }
 
@@ -95,11 +90,7 @@ class MedicinesStockController extends GetxController {
         'quantity':
             '${currentQty + quantity}${docSnap['quantity'].toString().replaceAll(RegExp(r'[0-9]'), '')}',
       });
-      Get.snackbar(
-        "Success",
-        "Stock increased successfully",
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      ConstToast().showSuccess("Stock increased successfully");
     }
   }
 
@@ -124,11 +115,7 @@ class MedicinesStockController extends GetxController {
         'quantity':
             '$newQty${docSnap['quantity'].toString().replaceAll(RegExp(r'[0-9]'), '')}',
       });
-      Get.snackbar(
-        "Success",
-        "Stock decreased successfully",
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      ConstToast().showSuccess("Stock decreased successfully");
     }
   }
 
@@ -141,11 +128,7 @@ class MedicinesStockController extends GetxController {
           .collection("medicines")
           .doc(docId)
           .delete();
-      Get.snackbar(
-        "Success",
-        "Medicine deleted successfully",
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      ConstToast().showSuccess("Medicine deleted successfully");
     } catch (err) {
       Get.snackbar("404 Error", err.toString());
     }

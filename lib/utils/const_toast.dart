@@ -42,7 +42,7 @@ class ConstToast extends GetxController {
   }
 
   void showError(String message) {
-    Get.snackbar('Error', message,
+    Get.snackbar('404 Error', message,
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.red,
         colorText: Colors.white,

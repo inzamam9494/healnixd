@@ -22,6 +22,7 @@ class CustomDropDown extends StatelessWidget {
       child: DropdownButtonFormField<String>(
         dropdownColor: Colors.white,
         initialValue: selectedValue,
+
         isDense: true,
         decoration: InputDecoration(
           labelText: labelText ?? 'Enter Text',
@@ -44,7 +45,9 @@ class CustomDropDown extends StatelessWidget {
             value: element,
             child: Text(
               element,
-              style: AppTextStyles.kCaption12SemiBoldTextStyle.copyWith(color: Colors.black),
+              style: AppTextStyles.kCaption12SemiBoldTextStyle.copyWith(
+                color: Colors.black,
+              ),
             ),
           );
         }).toList(),
