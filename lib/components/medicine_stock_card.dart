@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:healnixd/style/text_style.dart';
 
 Widget medicineStockCard({
@@ -14,6 +13,8 @@ Widget medicineStockCard({
   VoidCallback? onTapDecrease,
   VoidCallback? onTapEdit,
   VoidCallback? onTapDelete,
+  bool? isExpired,
+  bool? isLowStock,
 }) {
   return Card(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -41,7 +42,7 @@ Widget medicineStockCard({
               ),
               Column(
                 children: [
-                  Container(
+                  isExpired == true ? Container(
                     padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: Colors.red.shade100,
@@ -58,8 +59,8 @@ Widget medicineStockCard({
                         ),
                       ],
                     ),
-                  ),
-                  Container(
+                  ) : Container(),
+                  isLowStock == true ? Container(
                     margin: EdgeInsets.only(top: 4),
                     padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
@@ -77,7 +78,7 @@ Widget medicineStockCard({
                         ),
                       ],
                     ),
-                  ),
+                  ) : Container(),
                 ],
               ),
             ],
@@ -94,7 +95,7 @@ Widget medicineStockCard({
                       style: AppTextStyles.kCaption12RegularTextStyle,
                     ),
                     Text(
-                      medicineQuantity ?? "20ML",
+                      "${medicineQuantity}ML" ?? "20ML",
                       style: AppTextStyles.kCaption12RegularTextStyle,
                     ),
                   ],
@@ -120,7 +121,7 @@ Widget medicineStockCard({
                       style: AppTextStyles.kCaption12RegularTextStyle,
                     ),
                     Text(
-                      bottleSize ?? "100ML",
+                      "${bottleSize}ML" ?? "100ML",
                       style: AppTextStyles.kCaption12RegularTextStyle,
                     ),
                   ],

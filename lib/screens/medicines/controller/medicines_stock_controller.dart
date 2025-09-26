@@ -6,11 +6,12 @@ import 'package:healnixd/utils/const_toast.dart';
 
 class MedicinesStockController extends GetxController {
   var medicineNameController = TextEditingController();
-  var selectQuantity = "30ML".obs;
+  var selectQuantity = "30".obs;  // Keep as string for consistency
   var potency = "30C".obs;
-  var bottleSize = "30".obs;
+  var bottleSize = "30".obs;       // Keep as string for consistency
   var unit = "ML".obs;
   var expiryDate = TextEditingController();
+  var stockInputController = TextEditingController();
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -26,18 +27,14 @@ class MedicinesStockController extends GetxController {
           .doc(userId)
           .collection("medicines")
           .add({
-            "medicineName": medicineNameController.text,
-            "quantity": selectQuantity.value,
-            "potency": potency.value,
-            "bottleSize": bottleSize.value,
-            "expiryDate": expiryDate.text,
-            "timestamp": FieldValue.serverTimestamp(),
-          });
-      medicineNameController.clear();
-      expiryDate.clear();
-      selectQuantity.value = "30ML";
-      potency.value = "30C";
-      bottleSize.value = "30ML";
+        "medicineName": medicineNameController.text,
+        "quantity": selectQuantity.value, // Store as string
+        "potency": potency.value,
+        "bottleSize": bottleSize.value,
+        "expiryDate": expiryDate.text,
+        "timestamp": FieldValue.serverTimestamp(),
+      });
+      _clearFields();
       ConstToast().showSuccess("Medicine added successfully");
     } catch (err) {
       ConstToast().showError(err.toString());
@@ -53,18 +50,14 @@ class MedicinesStockController extends GetxController {
           .collection("medicines")
           .doc(docId)
           .update({
-            "medicineName": medicineNameController.text,
-            "quantity": selectQuantity.value,
-            "potency": potency.value,
-            "bottleSize": bottleSize.value,
-            "expiryDate": expiryDate.text,
-            "timestamp": FieldValue.serverTimestamp(),
-          });
-      medicineNameController.clear();
-      expiryDate.clear();
-      selectQuantity.value = "30ML";
-      potency.value = "30C";
-      bottleSize.value = "30ML";
+        "medicineName": medicineNameController.text,
+        "quantity": selectQuantity.value, // Store as string
+        "potency": potency.value,
+        "bottleSize": bottleSize.value,
+        "expiryDate": expiryDate.text,
+        "timestamp": FieldValue.serverTimestamp(),
+      });
+      _clearFields();
       ConstToast().showSuccess("Medicine updated successfully");
     } catch (err) {
       ConstToast().showError(err.toString());
@@ -73,49 +66,75 @@ class MedicinesStockController extends GetxController {
 
   // Increase stock of a medicine
   Future<void> increaseStock(String docId, int quantity) async {
-    final docRef = _firestore
-        .collection("user")
-        .doc(userId)
-        .collection("medicines")
-        .doc(docId);
+    try {
+      final docRef = _firestore
+          .collection("user")
+          .doc(userId)
+          .collection("medicines")
+          .doc(docId);
 
-    final docSnap = await docRef.get();
-    if (docSnap.exists) {
-      int currentQty =
-          int.tryParse(
-            docSnap['quantity'].toString().replaceAll(RegExp(r'[^0-9]'), ''),
-          ) ??
-          0;
-      await docRef.update({
-        'quantity':
-            '${currentQty + quantity}${docSnap['quantity'].toString().replaceAll(RegExp(r'[0-9]'), '')}',
-      });
-      ConstToast().showSuccess("Stock increased successfully");
+      final docSnap = await docRef.get();
+      if (docSnap.exists) {
+        // Handle both string and int types from Firestore
+        var currentQtyData = docSnap['quantity'];
+        int currentQty;
+
+        if (currentQtyData is int) {
+          currentQty = currentQtyData;
+        } else if (currentQtyData is String) {
+          currentQty = int.tryParse(currentQtyData) ?? 0;
+        } else {
+          currentQty = 0;
+        }
+
+        int newQty = currentQty + quantity;
+        await docRef.update({'quantity': newQty.toString()}); // Store as string
+        ConstToast().showSuccess("Stock increased successfully");
+      } else {
+        ConstToast().showError("Medicine not found");
+      }
+    } catch (err) {
+      ConstToast().showError("Error increasing stock: ${err.toString()}");
     }
   }
 
   // Decrease stock of a medicine
   Future<void> decreaseStock(String docId, int quantity) async {
-    final docRef = _firestore
-        .collection("user")
-        .doc(userId)
-        .collection("medicines")
-        .doc(docId);
+    try {
+      final docRef = _firestore
+          .collection("user")
+          .doc(userId)
+          .collection("medicines")
+          .doc(docId);
 
-    final docSnap = await docRef.get();
-    if (docSnap.exists) {
-      int currentQty =
-          int.tryParse(
-            docSnap['quantity'].toString().replaceAll(RegExp(r'[^0-9]'), ''),
-          ) ??
-          0;
-      int newQty = currentQty - quantity;
-      if (newQty < 0) newQty = 0;
-      await docRef.update({
-        'quantity':
-            '$newQty${docSnap['quantity'].toString().replaceAll(RegExp(r'[0-9]'), '')}',
-      });
-      ConstToast().showSuccess("Stock decreased successfully");
+      final docSnap = await docRef.get();
+      if (docSnap.exists) {
+        // Handle both string and int types from Firestore
+        var currentQtyData = docSnap['quantity'];
+        int currentQty;
+
+        if (currentQtyData is int) {
+          currentQty = currentQtyData;
+        } else if (currentQtyData is String) {
+          currentQty = int.tryParse(currentQtyData) ?? 0;
+        } else {
+          currentQty = 0;
+        }
+
+        if (quantity > currentQty) {
+          ConstToast().showError("Cannot remove more than current stock");
+          return;
+        }
+
+        int newQty = currentQty - quantity;
+        if (newQty < 0) newQty = 0;
+        await docRef.update({'quantity': newQty.toString()}); // Store as string
+        ConstToast().showSuccess("Stock decreased successfully");
+      } else {
+        ConstToast().showError("Medicine not found");
+      }
+    } catch (err) {
+      ConstToast().showError("Error decreasing stock: ${err.toString()}");
     }
   }
 
@@ -132,6 +151,25 @@ class MedicinesStockController extends GetxController {
     } catch (err) {
       Get.snackbar("404 Error", err.toString());
     }
+  }
+
+  // Helper method to populate fields for editing
+  void populateFieldsForEdit(Map<String, dynamic> medicineData) {
+    medicineNameController.text = medicineData['medicineName'] ?? '';
+    selectQuantity.value = medicineData['bottleSize']?.toString() ?? '30';
+    potency.value = medicineData['potency'] ?? '30C';
+    bottleSize.value = medicineData['bottleSize']?.toString() ?? '30';
+    expiryDate.text = medicineData['expiryDate'] ?? '';
+  }
+
+  // Helper method to clear all fields
+  void _clearFields() {
+    medicineNameController.clear();
+    expiryDate.clear();
+    stockInputController.clear();
+    selectQuantity.value = "30";
+    potency.value = "30C";
+    bottleSize.value = "30";
   }
 
   Stream<QuerySnapshot> getMedicines() {

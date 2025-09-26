@@ -22,7 +22,6 @@ class CustomDropDown extends StatelessWidget {
       child: DropdownButtonFormField<String>(
         dropdownColor: Colors.white,
         initialValue: selectedValue,
-
         isDense: true,
         decoration: InputDecoration(
           labelText: labelText ?? 'Enter Text',

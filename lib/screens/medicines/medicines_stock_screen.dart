@@ -7,6 +7,7 @@ import 'package:healnixd/components/medicine_stock_card.dart';
 import 'package:healnixd/screens/medicines/controller/medicines_stock_controller.dart';
 import 'package:healnixd/style/color.dart';
 import 'package:healnixd/style/text_style.dart';
+import 'package:healnixd/utils/const_toast.dart';
 
 class MedicinesStockScreen extends GetView<MedicinesStockController> {
   const MedicinesStockScreen({super.key});
@@ -57,7 +58,6 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                       onChanged: (val) {
                         controller.bottleSize.value = val!;
                         controller.selectQuantity.value = val;
-                        controller.unit.value = "ML";
                       },
                       selectedValue: controller.bottleSize.value,
                     ),
@@ -335,18 +335,40 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
               itemBuilder: (context, index) {
                 var medicine = medicines[index];
                 var docId = medicine.id;
+                // for low stock indication
+                var currentQty = int.tryParse(medicine['quantity'].toString()) ?? 0;
+                var bottleSizeVal = int.tryParse(medicine['bottleSize'].toString()) ?? 1;
+                bool isLowStock = currentQty <= 0.2 * bottleSizeVal;
+                // for expiry indication
+                DateTime today = DateTime.now();
+                bool isExpiredToday = false;
+                try {
+                  List<String> parts = medicine['expiryDate'].split('-'); // "dd-mm-yyyy"
+                  DateTime expiry = DateTime(
+                    int.parse(parts[2]),
+                    int.parse(parts[1]),
+                    int.parse(parts[0]),
+                  );
+                  isExpiredToday = expiry.year == today.year &&
+                      expiry.month == today.month &&
+                      expiry.day == today.day;
+                } catch (e) {
+                  isExpiredToday = false;
+                }
                 return medicineStockCard(
                   medicineName: medicine['medicineName'],
                   medicineScale: medicine['potency'],
                   medicineQuantity: medicine['quantity'],
                   expiryDate: medicine['expiryDate'],
                   bottleSize: medicine['bottleSize'],
+                  isLowStock: isLowStock,
+                  isExpired: isExpiredToday,
                   onTapIncrease: () {
                     Get.dialog(
                       AlertDialog(
                         backgroundColor: Colors.white,
                         title: Text(
-                          "Arnica Montana \n Increase Stock",
+                          "${medicine['medicineName']} \n Increase Stock",
                           style: AppTextStyles.kBody15SemiBoldTextStyle,
                         ),
                         content: Column(
@@ -354,11 +376,12 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             addDialogTextField(
+                              controller: controller.stockInputController,
                               labelText: "Enter Quantity",
                               keyboardType: TextInputType.number,
                             ),
                             Text(
-                              "Current Quantity: 50ML",
+                              "Current Quantity: ${medicine['quantity']}ML",
                               style: AppTextStyles.kSmall8SemiBoldTextStyle,
                             ).marginAll(2),
                           ],
@@ -375,8 +398,27 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                           dialogButton(
                             color: Colors.green,
                             text: "Add Stock",
-                            onPressed: () {
+                            onPressed: () async {
+                              String inputText = controller.stockInputController.text.trim();
+
+                              if (inputText.isEmpty) {
+                                ConstToast().showError("Please enter quantity");
+                                return;
+                              }
+
+                              int qty = int.tryParse(inputText) ?? 0;
+
+                              if (qty <= 0) {
+                                ConstToast().showError("Please enter valid quantity");
+                                return;
+                              }
+
+                              // Close dialog first
                               Get.back();
+
+                              // Then perform the operation
+                              await controller.increaseStock(docId, qty);
+                              controller.stockInputController.clear();
                             },
                           ),
                         ],
@@ -388,7 +430,7 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                       AlertDialog(
                         backgroundColor: Colors.white,
                         title: Text(
-                          "Arnica Montana \n Decrease Stock",
+                          "${medicine['medicineName']} \n Decrease Stock",
                           style: AppTextStyles.kBody15SemiBoldTextStyle,
                         ),
                         content: Column(
@@ -396,11 +438,12 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             addDialogTextField(
+                              controller: controller.stockInputController,
                               labelText: "Enter Quantity",
                               keyboardType: TextInputType.number,
                             ),
                             Text(
-                              "Current Quantity: 50ML",
+                              "Current Quantity: ${medicine['quantity']}ML",
                               style: AppTextStyles.kSmall8SemiBoldTextStyle,
                             ).marginAll(2),
                           ],
@@ -417,8 +460,27 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                           dialogButton(
                             text: "Remove Stock",
                             color: Colors.orange,
-                            onPressed: () {
+                            onPressed: () async {
+                              String inputText = controller.stockInputController.text.trim();
+
+                              if (inputText.isEmpty) {
+                                ConstToast().showError("Please enter quantity");
+                                return;
+                              }
+
+                              int qty = int.tryParse(inputText) ?? 0;
+
+                              if (qty <= 0) {
+                                ConstToast().showError("Please enter valid quantity");
+                                return;
+                              }
+
+                              // Close dialog first
                               Get.back();
+
+                              // Then perform the operation
+                              await controller.decreaseStock(docId, qty);
+                              controller.stockInputController.clear();
                             },
                           ),
                         ],
@@ -464,7 +526,7 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                             Obx(
                               () => CustomDropDown(
                                 labelText: "Bottle Size",
-                                items: ["30ML", "100ML", "500ML"],
+                                items: ["30", "100", "500"],
                                 onChanged: (val) {
                                   controller.bottleSize.value = val!;
                                   controller.selectQuantity.value = val;
@@ -504,6 +566,7 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                           dialogButton(
                             text: "Save",
                             onPressed: () {
+                              controller.updateMedicine(docId);
                               Get.back();
                             },
                           ),
@@ -537,6 +600,7 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                             color: Colors.red,
                             textColor: Colors.white,
                             onPressed: () {
+                              controller.deleteMedicine(docId);
                               Get.back();
                             },
                           ),
