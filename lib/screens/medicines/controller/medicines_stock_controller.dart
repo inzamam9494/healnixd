@@ -13,10 +13,17 @@ class MedicinesStockController extends GetxController {
   var expiryDate = TextEditingController();
   var stockInputController = TextEditingController();
 
+  var searchQuery = TextEditingController();
+  var selectPotency = "All".obs;
+  var sortBy = "Name (A-Z)".obs;
+  var sortOrder = "Ascending".obs;
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String get userId => _auth.currentUser?.uid ?? '';
+
+
 
   // Add new medicine for this user
   Future<void> addMedicine() async {

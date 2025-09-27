@@ -122,7 +122,9 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
               children: [
                 Flexible(
                   flex: 1,
-                  child: TextField(
+                  child: TextFormField(
+                    controller: controller.searchQuery,
+                    onChanged: (value) {},
                     cursorColor: Colors.blue,
                     decoration: InputDecoration(
                       hintText: "Search Medicines",
@@ -196,7 +198,9 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                                           labelText: "Filter By Potency",
                                           items: ["30C", "200C", "1000C", "1M"],
                                           selectedValue: "30C",
-                                          onChanged: (val) {},
+                                          onChanged: (val) {
+                                            controller.selectPotency.value = val!;
+                                          },
                                         ),
                                         actions: [
                                           dialogButton(
