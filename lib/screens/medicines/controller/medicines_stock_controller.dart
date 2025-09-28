@@ -6,14 +6,14 @@ import 'package:healnixd/utils/const_toast.dart';
 
 class MedicinesStockController extends GetxController {
   var medicineNameController = TextEditingController();
-  var selectQuantity = "30".obs;  // Keep as string for consistency
+  var selectQuantity = "30".obs; // Keep as string for consistency
   var potency = "30C".obs;
-  var bottleSize = "30".obs;       // Keep as string for consistency
+  var bottleSize = "30".obs; // Keep as string for consistency
   var unit = "ML".obs;
   var expiryDate = TextEditingController();
   var stockInputController = TextEditingController();
 
-  var searchQuery = TextEditingController();
+  var searchQuery = "".obs;
   var selectPotency = "All".obs;
   var sortBy = "Name (A-Z)".obs;
   var sortOrder = "Ascending".obs;
@@ -23,7 +23,83 @@ class MedicinesStockController extends GetxController {
 
   String get userId => _auth.currentUser?.uid ?? '';
 
+  // master list from firestore
+  var allMedicines = <DocumentSnapshot>[].obs;
 
+  // filter list to UI
+  var filteredMedicines = <DocumentSnapshot>[].obs;
+
+
+  void applyFilters() {
+    List<DocumentSnapshot> tempList = allMedicines.toList();
+
+    // Search filter
+    if (searchQuery.value.isNotEmpty) {
+      tempList = tempList.where((doc) {
+        final name = doc['medicineName'].toString().toLowerCase();
+        return name.contains(searchQuery.value.toLowerCase());
+      }).toList();
+    }
+
+    // Potency filter
+    if (selectPotency.value != "All") {
+      tempList = tempList.where((doc) {
+        return doc['potency'] == selectPotency.value;
+      }).toList();
+    }
+    if (sortBy.value == "Name (A-Z)") {
+      tempList.sort((a, b) => a['medicineName'].compareTo(b['medicineName']));
+    } else if (sortBy.value == "Bottle Size") {
+      tempList.sort((a, b) => int.parse(a['bottleSize']).compareTo(int.parse(b['bottleSize'])));
+    } else if (sortBy.value == "Expiry Date") {
+      tempList.sort((a, b) {
+        DateTime expA = parseDate(a['expiryDate']);
+        DateTime expB = parseDate(b['expiryDate']);
+        return expA.compareTo(expB);
+      });
+    }
+
+    if (sortOrder.value == "Descending") {
+      tempList = tempList.reversed.toList();
+    }
+
+    filteredMedicines.value = tempList;
+  }
+
+  DateTime parseDate(dynamic date) {
+    if (date is Timestamp) {
+      return date.toDate();
+    }
+    if (date is String) {
+      try {
+        return DateTime.parse(date);
+      } catch (_) {
+        return DateTime(1900); // fallback for invalid format
+      }
+    }
+    return DateTime(1900); // fallback for null or unknown type
+  }
+  // void applyFilters() {
+  //
+  //   List<DocumentSnapshot> tempList = allMedicines.toList();
+  //   if (searchQuery.value.isEmpty) {
+  //     filteredMedicines.assignAll(allMedicines);
+  //   } else {
+  //     filteredMedicines.assignAll(
+  //       allMedicines.where((doc) {
+  //         final name = doc['medicineName'].toString().toLowerCase();
+  //         return name.contains(searchQuery.value.toLowerCase());
+  //       }).toList(),
+  //     );
+  //   }
+  //   //filter by potency
+  //   if (selectPotency.value != "All") {
+  //     tempList = tempList.where((doc) {
+  //       return doc['potency'] == selectPotency.value;
+  //     }).toList();
+  //   }
+  //   filteredMedicines.value = tempList;
+  // }
 
   // Add new medicine for this user
   Future<void> addMedicine() async {
@@ -34,14 +110,14 @@ class MedicinesStockController extends GetxController {
           .doc(userId)
           .collection("medicines")
           .add({
-        "medicineName": medicineNameController.text,
-        "quantity": selectQuantity.value, // Store as string
-        "potency": potency.value,
-        "bottleSize": bottleSize.value,
-        "expiryDate": expiryDate.text,
-        "timestamp": FieldValue.serverTimestamp(),
-      });
-      _clearFields();
+            "medicineName": medicineNameController.text,
+            "quantity": selectQuantity.value, // Store as string
+            "potency": potency.value,
+            "bottleSize": bottleSize.value,
+            "expiryDate": expiryDate.text,
+            "timestamp": FieldValue.serverTimestamp(),
+          });
+      clearFields();
       ConstToast().showSuccess("Medicine added successfully");
     } catch (err) {
       ConstToast().showError(err.toString());
@@ -57,14 +133,14 @@ class MedicinesStockController extends GetxController {
           .collection("medicines")
           .doc(docId)
           .update({
-        "medicineName": medicineNameController.text,
-        "quantity": selectQuantity.value, // Store as string
-        "potency": potency.value,
-        "bottleSize": bottleSize.value,
-        "expiryDate": expiryDate.text,
-        "timestamp": FieldValue.serverTimestamp(),
-      });
-      _clearFields();
+            "medicineName": medicineNameController.text,
+            "quantity": selectQuantity.value, // Store as string
+            "potency": potency.value,
+            "bottleSize": bottleSize.value,
+            "expiryDate": expiryDate.text,
+            "timestamp": FieldValue.serverTimestamp(),
+          });
+      clearFields();
       ConstToast().showSuccess("Medicine updated successfully");
     } catch (err) {
       ConstToast().showError(err.toString());
@@ -170,7 +246,7 @@ class MedicinesStockController extends GetxController {
   }
 
   // Helper method to clear all fields
-  void _clearFields() {
+  Future<void> clearFields() async {
     medicineNameController.clear();
     expiryDate.clear();
     stockInputController.clear();
