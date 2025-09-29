@@ -394,6 +394,22 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
             controller.applyFilters(); // filter based on searchQuery
 
             return Obx(() {
+              if (controller.filteredMedicines.isEmpty) {
+                return ListView(
+                  physics: const AlwaysScrollableScrollPhysics(), // 🔑 Scroll enable
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: Center(
+                        child: Text(
+                          "No medicines found \n Try adding some \n or Refreshing the Screen",
+                          style: AppTextStyles.kBody15RegularTextStyle,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
               return Container(
                 child: ListView.builder(
                   itemCount: controller.filteredMedicines.length,
@@ -418,20 +434,18 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                         int.parse(parts[1]),
                         int.parse(parts[0]),
                       );
-                      isExpiredToday =
-                          expiry.year == today.year &&
-                          expiry.month == today.month &&
-                          expiry.day == today.day;
+                      isExpiredToday = expiry.isBefore(DateTime(
+                        today.year,
+                        today.month,
+                        today.day,
+                      )) ||
+                          expiry.isAtSameMomentAs(DateTime(
+                            today.year,
+                            today.month,
+                            today.day,
+                          ));
                     } catch (e) {
                       isExpiredToday = false;
-                    }
-                    if (controller.filteredMedicines.isEmpty) {
-                      return Center(
-                        child: Text(
-                          "No medicines found",
-                          style: AppTextStyles.kCaption12RegularTextStyle,
-                        ),
-                      );
                     }
                     return medicineStockCard(
                       medicineName: medicine['medicineName'],
