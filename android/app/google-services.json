@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1014733684860",
+    "project_id": "healnixd",
+    "storage_bucket": "healnixd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1014733684860:android:ec116bc97af61dc27809f9",
+        "android_client_info": {
+          "package_name": "com.example.healnixd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATN94OhADwkcTO_0j7sikXYFcFkHf-VCc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
