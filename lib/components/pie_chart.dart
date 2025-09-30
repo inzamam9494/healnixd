@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:healnixd/style/text_style.dart';
 
 class MedicinePieChart extends StatefulWidget {
   final List<PieChartSectionData> data;
@@ -103,6 +104,7 @@ class Indicator extends StatelessWidget {
     return Row(
       children: [
         Container(
+          margin: EdgeInsets.only(left: 10, ),
           width: 16,
           height: 16,
           decoration: BoxDecoration(
@@ -110,8 +112,8 @@ class Indicator extends StatelessWidget {
             color: color,
           ),
         ),
-        const SizedBox(width: 8),
-        Text(text, style: const TextStyle(fontSize: 14)),
+        const SizedBox(width: 4),
+        Text(text, style: AppTextStyles.kSmall10SemiBoldTextStyle),
       ],
     );
   }

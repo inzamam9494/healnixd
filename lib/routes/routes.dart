@@ -8,6 +8,7 @@ import 'package:healnixd/screens/auth/reset_password_screen.dart';
 import 'package:healnixd/screens/auth/splash_screen.dart';
 import 'package:healnixd/screens/bottom_bar/bindings/bottom_nav_binding.dart';
 import 'package:healnixd/screens/bottom_bar/bottom_navigation_menu.dart';
+import 'package:healnixd/screens/home/bindings/home_bindings.dart';
 import 'package:healnixd/screens/home/home_screen.dart';
 import 'package:healnixd/screens/medicines/bindings/medicines_stock_binding.dart';
 import 'package:healnixd/screens/medicines/medicines_stock_screen.dart';
@@ -54,7 +55,11 @@ class ApplicationRoutes {
       page: () => BottomNavigationMenu(),
       binding: BottomNavBinding(),
     ),
-    GetPage(name: homeScreen, page: () => const HomeScreen()),
+    GetPage(
+      name: homeScreen,
+      page: () => HomeScreen(),
+      binding: HomeBindings(),
+    ),
     GetPage(
       name: medicinesStockScreen,
       page: () => MedicinesStockScreen(),

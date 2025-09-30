@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:healnixd/components/pie_chart.dart';
+import 'package:healnixd/screens/home/controller/home_controller.dart';
 import 'package:healnixd/style/text_style.dart';
 import 'package:healnixd/components/quick_action_cards.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
 
   @override
@@ -110,11 +111,11 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                   indicators: [
-                    Indicator(color: Colors.blue, text: 'Painkillers'),
+                    Indicator(color: Colors.blue, text: 'Normal Stock'),
                     SizedBox(height: 4),
-                    Indicator(color: Colors.green, text: 'Vitamins'),
+                    Indicator(color: Colors.orangeAccent, text: 'Low Stock '),
                     SizedBox(height: 4),
-                    Indicator(color: Colors.orange, text: 'Antibiotics'),
+                    Indicator(color: Colors.red, text: 'Expired Stock'),
                   ],
                 ),
               ),
