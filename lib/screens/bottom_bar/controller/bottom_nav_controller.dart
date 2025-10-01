@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:healnixd/screens/home/controller/home_controller.dart';
 import 'package:healnixd/screens/home/home_screen.dart';
 import 'package:healnixd/screens/medicines/controller/medicines_stock_controller.dart';
 import 'package:healnixd/screens/medicines/medicines_stock_screen.dart';
@@ -9,6 +10,7 @@ class BottomNavController extends GetxController {
   final MedicinesStockController medicinesStockController = Get.put(
     MedicinesStockController(),
   );
+  final HomeController homeController = Get.put(HomeController());
 
   final screens = [HomeScreen(), MedicinesStockScreen(), ProfileScreen()];
 }

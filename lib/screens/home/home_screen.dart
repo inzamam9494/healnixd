@@ -75,39 +75,30 @@ class HomeScreen extends GetView<HomeController> {
                   ),
                 ],
               ),
-              child: Center(
+              child: Obx(() => Center(
                 child: MedicinePieChart(
-                  centerText: "Total\n100", // 👈 dynamic center text
+                  centerText: "Total \n ${controller.totalCount.value.toString()}", // 👈 dynamic center text
                   data: [
                     PieChartSectionData(
                       color: Colors.blue,
-                      value: 50,
-                      title: '50%',
+                      value: controller.normalCount.value.toDouble(),
+                      title: '${controller.normalCount.value}',
                       radius: 50,
-                      titleStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
+                      titleStyle: AppTextStyles.kSmall10SemiBoldTextStyle.copyWith(color: Colors.white),
                     ),
                     PieChartSectionData(
-                      color: Colors.green,
-                      value: 30,
-                      title: '30%',
+                      color: Colors.red,
+                      value: controller.expiredCount.value.toDouble(),
+                      title: '${controller.expiredCount.value}',
                       radius: 50,
-                      titleStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
+                      titleStyle: AppTextStyles.kSmall10SemiBoldTextStyle.copyWith(color: Colors.white),
                     ),
                     PieChartSectionData(
                       color: Colors.orange,
-                      value: 20,
-                      title: '20',
+                      value: controller.lowStockCount.value.toDouble(),
+                      title: '${controller.lowStockCount.value}',
                       radius: 50,
-                      titleStyle: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
+                      titleStyle: AppTextStyles.kSmall10SemiBoldTextStyle.copyWith(color: Colors.white),
                     ),
                   ],
                   indicators: [
@@ -118,7 +109,7 @@ class HomeScreen extends GetView<HomeController> {
                     Indicator(color: Colors.red, text: 'Expired Stock'),
                   ],
                 ),
-              ),
+              )),
             ),
             Container(
               height: 160.sp,
