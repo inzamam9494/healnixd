@@ -9,7 +9,9 @@ import 'package:healnixd/routes/routes.dart';
 import '../../components/custom_Text_field.dart';
 
 class OtpScreen extends StatelessWidget {
-  const OtpScreen({super.key});
+   OtpScreen({super.key});
+
+  final List<TextEditingController> otpControllers = List.generate(4, (_) => TextEditingController());
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +27,14 @@ class OtpScreen extends StatelessWidget {
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(5, (index) {
+                children: List.generate(4, (index) {
                   return Container(
                     height: 50,
                     width: 50,
-                    child: CustomTextField(),
+                    child: CustomTextField(
+                      controller: otpControllers[index],
+
+                    ),
                   );
                 }),
               ),

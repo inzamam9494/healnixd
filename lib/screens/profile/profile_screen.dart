@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healnixd/components/custom_texts.dart';
 import 'package:healnixd/components/medicine_stock_card.dart';
+import 'package:healnixd/screens/profile/controller/profile_controller.dart';
 import 'package:healnixd/style/color.dart';
 import 'package:healnixd/style/text_style.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends GetView<ProfileController> {
   const ProfileScreen({super.key});
 
   @override
@@ -103,7 +104,7 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Card(
+               Card(
                 margin: EdgeInsets.symmetric(vertical: 12),
                 child: Column(
                   children: [
@@ -122,21 +123,21 @@ class ProfileScreen extends StatelessWidget {
                       title: Text('Get Help', style: AppTextStyles.kSmall10SemiBoldTextStyle,),
                       trailing: Icon(CupertinoIcons.forward),
                     ),
-                    ListTile(
+                     ListTile(
                       leading: Icon(Icons.logout, color: Colors.red,),
                       title: Text('Log out', style: AppTextStyles.kSmall10SemiBoldTextStyle,),
                       trailing: Icon(CupertinoIcons.forward),
                       onTap: (){
                         Get.dialog(
                         AlertDialog(
-                          title: Text("If You Really Log Out"),
+                          title: Text("Are you sure you want to log out?", style: AppTextStyles.kCaption12SemiBoldTextStyle,),
                           actions: [
                             dialogButton(
                               text: "Cancel",
                               color: Colors.white,
                               textColor: Colors.grey,
                               onPressed: () {
-                                Navigator.of(context).pop();
+                                controller.logout();
                               },
                             ),
                             dialogButton(
@@ -144,7 +145,7 @@ class ProfileScreen extends StatelessWidget {
                               color: Colors.red,
                               textColor: Colors.white,
                               onPressed: () {
-                                Navigator.of(context).pop();
+                                controller.logout();
                               },
                             )
                           ],

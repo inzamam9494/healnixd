@@ -13,6 +13,8 @@ import 'package:healnixd/screens/home/home_screen.dart';
 import 'package:healnixd/screens/medicines/bindings/medicines_stock_binding.dart';
 import 'package:healnixd/screens/medicines/medicines_stock_screen.dart';
 import 'package:healnixd/screens/onboarding/onboarding_slider_screen.dart';
+import 'package:healnixd/screens/profile/bindings/profile_binding.dart';
+import 'package:healnixd/screens/profile/profile_screen.dart';
 
 class ApplicationRoutes {
   static const String splashScreen = '/';
@@ -26,6 +28,7 @@ class ApplicationRoutes {
   static const String homeScreen = '/home';
   static const String medicinesStockScreen = '/medicines';
   static const String profileScreen = '/profile';
+  static const String premiumPlanScreen = '/premium-plan';
 
   static List<GetPage>? getApplicationPages() => [
     GetPage(name: splashScreen, page: () => const SplashScreen()),
@@ -38,7 +41,7 @@ class ApplicationRoutes {
       name: forgetPasswordScreen,
       page: () => const ForgetPasswordScreen(),
     ),
-    GetPage(name: otpVerificationScreen, page: () => const OtpScreen()),
+    GetPage(name: otpVerificationScreen, page: () => OtpScreen()),
     GetPage(
       name: resetPasswordScreen,
       page: () => const ResetPasswordScreen(),
@@ -64,6 +67,11 @@ class ApplicationRoutes {
       name: medicinesStockScreen,
       page: () => MedicinesStockScreen(),
       binding: MedicinesStockBinding(),
+    ),
+    GetPage(
+      name: profileScreen,
+      page: () => ProfileScreen(),
+      binding: ProfileBinding(),
     ),
   ];
 }

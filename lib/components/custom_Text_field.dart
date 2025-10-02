@@ -25,6 +25,7 @@ class CustomTextField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         obscureText: obscureText!,
+        textAlign: TextAlign.center,
         style: AppTextStyles.kBody15RegularTextStyle.copyWith(
           color: Colors.blue,
         ),
