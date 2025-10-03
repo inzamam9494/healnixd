@@ -25,7 +25,7 @@ class HomeScreen extends GetView<HomeController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Hello", style: AppTextStyles.kBody15RegularTextStyle),
-            Text("Mohd Shakeel", style: AppTextStyles.kBody17SemiBoldTextStyle),
+            Obx(() => Text(controller.userName.value, style: AppTextStyles.kBody17SemiBoldTextStyle)),
           ],
         ),
         actions: [

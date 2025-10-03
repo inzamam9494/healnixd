@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -16,7 +17,7 @@ class RegisterController extends GetxController {
 
   // Firebase Auth instance can be added here for sign up functionality
   Future<void> signUp() async {
-    Rx<String> name = registerNameController.value.text.obs;
+    final name = registerNameController.value.text.trim();
     final email = registerEmailController.value.text.trim();
     final password = registerPasswordController.value.text.trim();
     // Implement Firebase sign up logic here
@@ -33,10 +34,21 @@ class RegisterController extends GetxController {
           password: password,
         );
 
+        // save user data in Firestore
+        String uid = FirebaseAuth.instance.currentUser!.uid;
+        await FirebaseFirestore.instance.collection('user').doc(uid).set({
+          'name': name,
+          'email': email,
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+
+        // Save user info in SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('name', name);
+        await prefs.setString('email', email);
+
         // remember
         if (isChecked.value == true) {
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('email', email);
           await prefs.setString('password', password);
         }
         ConstToast().showSuccess("Account created successfully");

@@ -40,16 +40,16 @@ class ProfileScreen extends GetView<ProfileController> {
           margin: EdgeInsets.all(12),
           child: Column(
             children: [
-              Card(
+              Obx(() => Card(
                 margin: EdgeInsets.symmetric(vertical: 8),
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundImage: AssetImage('assets/images/profile.jpg'),
                   ),
-                  title: Text('Mohd Shakeel', style: AppTextStyles.kCaption12SemiBoldTextStyle),
-                  subtitle: Text('mohdshakeel12123@gmail.com', style: AppTextStyles.kSmall10RegularTextStyle,)
+                  title: Text(controller.userName.value, style: AppTextStyles.kCaption12SemiBoldTextStyle),
+                  subtitle: Text(controller.userEmail.value, style: AppTextStyles.kSmall10RegularTextStyle,)
                 ),
-              ),
+              )),
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50)

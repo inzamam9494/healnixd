@@ -21,6 +21,16 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     fetchMedicines();
+    fetchUserName();
+  }
+
+  void fetchUserName(){
+    _firestore.collection("user").doc(userId).get().then((doc) {
+      if (doc.exists) {
+        var data = doc.data();
+        userName.value = data?['name'] ?? 'Guest';
+      }
+    });
   }
 
   void fetchMedicines() {

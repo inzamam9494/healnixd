@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -5,7 +6,10 @@ import 'package:healnixd/utils/const_toast.dart';
 
 class ProfileController extends GetxController {
   var userId = "".obs;
+  var userName = "".obs;
   var userEmail = "".obs;
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void onInit() {
@@ -15,6 +19,17 @@ class ProfileController extends GetxController {
       userId.value = user.uid;
       userEmail.value = user.email ?? "";
     }
+    fetchUserDetails();
+  }
+
+  void fetchUserDetails() {
+    _firestore.collection("user").doc(userId.value).get().then((doc) {
+      if (doc.exists) {
+        var data = doc.data();
+        userName.value = data?['name'] ?? 'Guest';
+        userEmail.value = data?['email'] ?? '';
+      }
+    });
   }
 
   Future<void> logout() async {

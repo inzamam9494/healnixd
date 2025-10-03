@@ -11,7 +11,7 @@ import '../../components/custom_Text_field.dart';
 class OtpScreen extends StatelessWidget {
    OtpScreen({super.key});
 
-  final List<TextEditingController> otpControllers = List.generate(4, (_) => TextEditingController());
+  // final List<TextEditingController> otpControllers = List.generate(4, (_) => TextEditingController());
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,8 @@ class OtpScreen extends StatelessWidget {
                     height: 50,
                     width: 50,
                     child: CustomTextField(
-                      controller: otpControllers[index],
-
+                      maxLength: 1,
+                      keyboardType: TextInputType.number
                     ),
                   );
                 }),

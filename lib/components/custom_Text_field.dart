@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:healnixd/style/text_style.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -8,6 +9,10 @@ class CustomTextField extends StatelessWidget {
   final IconData? suffixIcon;
   final VoidCallback? iconTap;
   final String? Function(String?)? validator;
+  final FocusNode? focusNode;
+  final TextInputType? keyboardType;
+  final int? maxLength;
+  final Function(String)? onChanged;
 
   const CustomTextField({
     this.labelText,
@@ -17,6 +22,10 @@ class CustomTextField extends StatelessWidget {
     this.suffixIcon,
     this.iconTap,
     this.validator,
+    this.focusNode,
+    this.keyboardType,
+    this.maxLength,
+    this.onChanged,
   });
 
   @override
@@ -25,7 +34,16 @@ class CustomTextField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         obscureText: obscureText!,
-        textAlign: TextAlign.center,
+        focusNode: focusNode,
+        keyboardType: keyboardType,
+        maxLength: maxLength,
+        onChanged: onChanged,
+        inputFormatters: maxLength == 1
+            ? [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(1),
+              ]
+            : null,
         style: AppTextStyles.kBody15RegularTextStyle.copyWith(
           color: Colors.blue,
         ),
@@ -35,10 +53,13 @@ class CustomTextField extends StatelessWidget {
           labelText: labelText,
           fillColor: Colors.blue.withValues(alpha: 0.1),
           filled: true,
-          suffixIcon: IconButton(
+          counterText: '',
+          suffixIcon: suffixIcon != null
+              ? IconButton(
             onPressed: iconTap,
             icon: Icon(suffixIcon, color: Colors.blue),
-          ),
+          )
+              : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,
