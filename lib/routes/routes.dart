@@ -39,7 +39,8 @@ class ApplicationRoutes {
     ),
     GetPage(
       name: forgetPasswordScreen,
-      page: () => const ForgetPasswordScreen(),
+      page: () => ForgetPasswordScreen(),
+      binding: AuthBinding(),
     ),
     GetPage(name: otpVerificationScreen, page: () => OtpScreen()),
     GetPage(

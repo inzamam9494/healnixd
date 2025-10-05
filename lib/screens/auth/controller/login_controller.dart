@@ -11,6 +11,7 @@ class LoginController extends GetxController{
   var isVisiblePassword = false.obs;
   var isLoading = false.obs;
   final formKey = GlobalKey<FormState>();
+  var resetPasswordEmailController = TextEditingController();
 
   Future<void> login() async {
     final email = loginEmailController.value.text.trim();
@@ -33,4 +34,20 @@ class LoginController extends GetxController{
       }
     }
   }
+
+  Future<void> resetPassword() async {
+    final email = resetPasswordEmailController.value.text.trim();
+    if(email.isEmpty){
+      Get.snackbar("Alert", "Please enter your email");
+      return;
+    }
+    try{
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      Get.snackbar("Success", "Password reset email sent");
+      Get.back();
+    }catch(err){
+      Get.snackbar("Error", "Failed to send password reset email");
+    }
+  }
+
 }

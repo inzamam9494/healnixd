@@ -4,8 +4,9 @@ import 'package:healnixd/components/custom_Text_field.dart';
 import 'package:healnixd/components/custom_buttons.dart';
 import 'package:healnixd/components/custom_texts.dart';
 import 'package:healnixd/routes/routes.dart';
+import 'package:healnixd/screens/auth/controller/login_controller.dart';
 
-class ForgetPasswordScreen extends StatelessWidget {
+class ForgetPasswordScreen extends GetView<LoginController> {
   const ForgetPasswordScreen({super.key});
 
   @override
@@ -23,11 +24,24 @@ class ForgetPasswordScreen extends StatelessWidget {
               children: [
                 appBarText(text: "Forget Password?").marginOnly(bottom: 20.0),
                 authHeadingText(text: "Enter your email"),
-                CustomTextField(),
+                CustomTextField(
+                  controller: controller.resetPasswordEmailController,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your email';
+                    }
+                    if (!GetUtils.isEmail(value)) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
+                ),
                 authButton(
-                  text: "Send Code",
+                  text: "Send Email",
                   onPressed: () {
-                    Get.toNamed(ApplicationRoutes.otpVerificationScreen);
+                    controller.resetPassword();
+                    // Get.toNamed(ApplicationRoutes.otpVerificationScreen);
                   },
                 ).marginOnly(top: 40.0, bottom: 20.0),
               ],
