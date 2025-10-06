@@ -4,6 +4,18 @@ import 'package:get/get.dart';
 class ConstToast extends GetxController {
   static ConstToast get to => Get.find();
 
+  void _safeShow(Function() showFunction) {
+    if (Get.context != null) {
+      showFunction();
+    } else {
+      Future.delayed(Duration(milliseconds: 200), () {
+        if (Get.context != null) {
+          showFunction();
+        }
+      });
+    }
+  }
+
   void showDialog({
     String title = "Alert",
     String message = "",
@@ -42,7 +54,7 @@ class ConstToast extends GetxController {
   }
 
   void showError(String message) {
-    Get.snackbar('404 Error', message,
+    Get.snackbar('Error', message,
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.red,
         colorText: Colors.white,
