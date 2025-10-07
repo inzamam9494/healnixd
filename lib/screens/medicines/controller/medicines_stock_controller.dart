@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healnixd/utils/const_toast.dart';
+import 'package:healnixd/utils/custom_snack_bar.dart';
 
 class MedicinesStockController extends GetxController {
   var medicineNameController = TextEditingController();
@@ -118,9 +119,11 @@ class MedicinesStockController extends GetxController {
             "timestamp": FieldValue.serverTimestamp(),
           });
       clearFields();
-      ConstToast().showSuccess("Medicine added successfully");
+      // ConstToast().showSuccess("Medicine added successfully");
+      CustomSnackBar.success("Medicine added successfully");
     } catch (err) {
-      ConstToast().showError(err.toString());
+      // ConstToast().showError(err.toString());
+      CustomSnackBar.error(err.toString());
     }
   }
 
@@ -141,9 +144,11 @@ class MedicinesStockController extends GetxController {
             "timestamp": FieldValue.serverTimestamp(),
           });
       clearFields();
-      ConstToast().showSuccess("Medicine updated successfully");
+      // ConstToast().showSuccess("Medicine updated successfully");
+      CustomSnackBar.success("Medicine updated successfully");
     } catch (err) {
-      ConstToast().showError(err.toString());
+      // ConstToast().showError(err.toString());
+      CustomSnackBar.error(err.toString());
     }
   }
 
@@ -172,12 +177,15 @@ class MedicinesStockController extends GetxController {
 
         int newQty = currentQty + quantity;
         await docRef.update({'quantity': newQty.toString()}); // Store as string
-        ConstToast().showSuccess("Stock increased successfully");
+        // ConstToast().showSuccess("Stock increased successfully");
+        CustomSnackBar.success("Stock increased successfully");
       } else {
-        ConstToast().showError("Medicine not found");
+        // ConstToast().showError("Medicine not found");
+        CustomSnackBar.error("Medicine not found");
       }
     } catch (err) {
-      ConstToast().showError("Error increasing stock: ${err.toString()}");
+      // ConstToast().showError("Error increasing stock: ${err.toString()}");
+      CustomSnackBar.error("Error increasing stock: ${err.toString()}");
     }
   }
 
@@ -205,19 +213,23 @@ class MedicinesStockController extends GetxController {
         }
 
         if (quantity > currentQty) {
-          ConstToast().showError("Cannot remove more than current stock");
+          // ConstToast().showError("Cannot remove more than current stock");
+          CustomSnackBar.error("Cannot remove more than current stock");
           return;
         }
 
         int newQty = currentQty - quantity;
         if (newQty < 0) newQty = 0;
         await docRef.update({'quantity': newQty.toString()}); // Store as string
-        ConstToast().showSuccess("Stock decreased successfully");
+        // ConstToast().showSuccess("Stock decreased successfully");
+        CustomSnackBar.success("Stock decreased successfully");
       } else {
-        ConstToast().showError("Medicine not found");
+        // ConstToast().showError("Medicine not found");
+        CustomSnackBar.error("Medicine not found");
       }
     } catch (err) {
-      ConstToast().showError("Error decreasing stock: ${err.toString()}");
+      // ConstToast().showError("Error decreasing stock: ${err.toString()}");
+      CustomSnackBar.error("Error decreasing stock: ${err.toString()}");
     }
   }
 
@@ -230,9 +242,11 @@ class MedicinesStockController extends GetxController {
           .collection("medicines")
           .doc(docId)
           .delete();
-      ConstToast().showSuccess("Medicine deleted successfully");
+      // ConstToast().showSuccess("Medicine deleted successfully");
+      CustomSnackBar.success("Medicine deleted successfully");
     } catch (err) {
-      Get.snackbar("404 Error", err.toString());
+      // Get.snackbar("404 Error", err.toString());
+      CustomSnackBar.error(err.toString());
     }
   }
 

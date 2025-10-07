@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:healnixd/routes/routes.dart';
 import 'package:healnixd/utils/const_toast.dart';
+import 'package:healnixd/utils/custom_snack_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterController extends GetxController {
@@ -22,7 +23,8 @@ class RegisterController extends GetxController {
     final password = registerPasswordController.value.text.trim();
     // Implement Firebase sign up logic here
     if (name.isEmpty || email.isEmpty || password.isEmpty) {
-      ConstToast().showInfo("All fields are required");
+      // ConstToast().showInfo("All fields are required");
+      CustomSnackBar.info("All fields are required");
       return;
     }
 
@@ -51,10 +53,12 @@ class RegisterController extends GetxController {
         if (isChecked.value == true) {
           await prefs.setString('password', password);
         }
-        ConstToast().showSuccess("Account created successfully");
+        // ConstToast().showSuccess("Account created successfully");
+        CustomSnackBar.success("Account created successfully");
         Get.toNamed(ApplicationRoutes.onboardingScreen);
       } catch (err) {
-        ConstToast().showError("Failed to create account");
+        // ConstToast().showError("Failed to create account");
+        CustomSnackBar.error("Failed to create account");
       } finally {
         isLoading.value = false;
       }

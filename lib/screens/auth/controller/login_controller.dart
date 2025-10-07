@@ -83,13 +83,15 @@ class LoginController extends GetxController{
           break;
         case 'invalid-email':
           // ConstToast().showError("Invalid email address.");
-          CustomSnackBar.error("");
+          CustomSnackBar.error("Invalid email address.");
           break;
         case 'too-many-requests':
-          ConstToast().showError("Too many attempts. Please try again later.");
+          // ConstToast().showError("Too many attempts. Please try again later.");
+        CustomSnackBar.error("Too many attempts. Please try again later.");
           break;
         default:
-          ConstToast().showError("Failed to send reset email.");
+          // ConstToast().showError("Failed to send reset email.");
+          CustomSnackBar.error("Failed to send reset email.");
       }
     } finally {
       isLoading.value = false;

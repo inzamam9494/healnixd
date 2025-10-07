@@ -9,6 +9,7 @@ import 'package:healnixd/screens/medicines/controller/medicines_stock_controller
 import 'package:healnixd/style/color.dart';
 import 'package:healnixd/style/text_style.dart';
 import 'package:healnixd/utils/const_toast.dart';
+import 'package:healnixd/utils/custom_snack_bar.dart';
 
 class MedicinesStockScreen extends GetView<MedicinesStockController> {
   const MedicinesStockScreen({super.key});
@@ -25,63 +26,65 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                 'Add New Medicine',
                 style: AppTextStyles.kCaption12SemiBoldTextStyle,
               ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  addDialogTextField(
-                    labelText: "Medicine Name",
-                    controller: controller.medicineNameController, // no Obx
-                  ),
-                  Obx(
-                    () => CustomDropDown(
-                      labelText: "Select Quantity",
-                      items: [(controller.bottleSize.value)],
-                      onChanged: null,
-                      selectedValue: controller
-                          .selectQuantity
-                          .value, // make sure dropdown shows current value
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    addDialogTextField(
+                      labelText: "Medicine Name",
+                      controller: controller.medicineNameController, // no Obx
                     ),
-                  ),
-                  Obx(
-                    () => CustomDropDown(
-                      labelText: "Potency",
-                      items: ["30C", "200C", "1000C", "1M"],
-                      onChanged: (val) {
-                        controller.potency.value = val!;
+                    Obx(
+                          () => CustomDropDown(
+                        labelText: "Select Quantity",
+                        items: [(controller.bottleSize.value)],
+                        onChanged: null,
+                        selectedValue: controller
+                            .selectQuantity
+                            .value, // make sure dropdown shows current value
+                      ),
+                    ),
+                    Obx(
+                          () => CustomDropDown(
+                        labelText: "Potency",
+                        items: ["30C", "200C", "1000C", "1M"],
+                        onChanged: (val) {
+                          controller.potency.value = val!;
+                        },
+                        selectedValue: controller.potency.value,
+                      ),
+                    ),
+                    Obx(
+                          () => CustomDropDown(
+                        labelText: "Bottle Size",
+                        items: ["30", "100", "500"],
+                        onChanged: (val) {
+                          controller.bottleSize.value = val!;
+                          controller.selectQuantity.value = val;
+                        },
+                        selectedValue: controller.bottleSize.value,
+                      ),
+                    ),
+                    addDialogTextField(
+                      controller: controller.expiryDate, // no Obx
+                      labelText: "Expiry Date",
+                      suffixIcon: Icons.calendar_month,
+                      iconTap: () async {
+                        DateTime? pickDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100),
+                        );
+                        if (pickDate != null) {
+                          String formattedDate =
+                              "${pickDate.day}-${pickDate.month}-${pickDate.year}";
+                          controller.expiryDate.text = formattedDate;
+                        }
                       },
-                      selectedValue: controller.potency.value,
                     ),
-                  ),
-                  Obx(
-                    () => CustomDropDown(
-                      labelText: "Bottle Size",
-                      items: ["30", "100", "500"],
-                      onChanged: (val) {
-                        controller.bottleSize.value = val!;
-                        controller.selectQuantity.value = val;
-                      },
-                      selectedValue: controller.bottleSize.value,
-                    ),
-                  ),
-                  addDialogTextField(
-                    controller: controller.expiryDate, // no Obx
-                    labelText: "Expiry Date",
-                    suffixIcon: Icons.calendar_month,
-                    iconTap: () async {
-                      DateTime? pickDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2100),
-                      );
-                      if (pickDate != null) {
-                        String formattedDate =
-                            "${pickDate.day}-${pickDate.month}-${pickDate.year}";
-                        controller.expiryDate.text = formattedDate;
-                      }
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
               actions: [
                 dialogButton(
@@ -497,18 +500,20 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                                       .trim();
 
                                   if (inputText.isEmpty) {
-                                    ConstToast().showError(
-                                      "Please enter quantity",
-                                    );
+                                    // ConstToast().showError(
+                                    //   "Please enter quantity",
+                                    // );
+                                    CustomSnackBar.error("Please enter quantity");
                                     return;
                                   }
 
                                   int qty = int.tryParse(inputText) ?? 0;
 
                                   if (qty <= 0) {
-                                    ConstToast().showError(
-                                      "Please enter valid quantity",
-                                    );
+                                    // ConstToast().showError(
+                                    //   "Please enter valid quantity",
+                                    // );
+                                    CustomSnackBar.error("Please enter valid quantity");
                                     return;
                                   }
 
@@ -566,18 +571,20 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                                       .trim();
 
                                   if (inputText.isEmpty) {
-                                    ConstToast().showError(
-                                      "Please enter quantity",
-                                    );
+                                    // ConstToast().showError(
+                                    //   "Please enter quantity",
+                                    // );
+                                    CustomSnackBar.error("Please enter quantity");
                                     return;
                                   }
 
                                   int qty = int.tryParse(inputText) ?? 0;
 
                                   if (qty <= 0) {
-                                    ConstToast().showError(
-                                      "Please enter valid quantity",
-                                    );
+                                    // ConstToast().showError(
+                                    //   "Please enter valid quantity",
+                                    // );
+                                    CustomSnackBar.error("Please enter valid quantity");
                                     return;
                                   }
 

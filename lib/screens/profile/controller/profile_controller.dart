@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:healnixd/utils/const_toast.dart';
+import 'package:healnixd/utils/custom_snack_bar.dart';
 
 class ProfileController extends GetxController {
   var userId = "".obs;
@@ -37,11 +38,13 @@ class ProfileController extends GetxController {
       await FirebaseAuth.instance.signOut();
       userId.value = "";
       userEmail.value = "";
-      ConstToast().showSuccess("Logged out successfully");
+      // ConstToast().showSuccess("Logged out successfully");
+      CustomSnackBar.success("Logged out successfully");
       Get.offAllNamed('/');
     } catch (err) {
       debugPrint("Logout Error: $err");
-      ConstToast().showError("Failed to logout");
+      // ConstToast().showError("Failed to logout");
+      CustomSnackBar.error("Failed to logout");
     }
   }
 }
