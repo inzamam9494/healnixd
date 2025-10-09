@@ -77,7 +77,7 @@ class HomeScreen extends GetView<HomeController> {
               ),
               child: Obx(() => Center(
                 child: MedicinePieChart(
-                  centerText: "Total \n ${controller.totalCount.value.toString()}", // 👈 dynamic center text
+                  centerText: "Total \n ${controller.totalCount.value.toString()}",
                   data: [
                     PieChartSectionData(
                       color: Colors.blue,
