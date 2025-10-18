@@ -137,7 +137,7 @@ class ProfileScreen extends GetView<ProfileController> {
                               color: Colors.white,
                               textColor: Colors.grey,
                               onPressed: () {
-                                controller.logout();
+                                Get.back();
                               },
                             ),
                             dialogButton(
