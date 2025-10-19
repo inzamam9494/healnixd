@@ -601,6 +601,12 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                         );
                       },
                       onTapEdit: () {
+                        controller.populateFieldsForEdit({
+                          'medicineName': medicine['medicineName'],
+                          'bottleSize': medicine['bottleSize'],
+                          'potency': medicine['potency'],
+                          'expiryDate': medicine['expiryDate'],
+                        });
                         Get.dialog(
                           AlertDialog(
                             backgroundColor: Colors.white,
@@ -614,7 +620,7 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                                 addDialogTextField(
                                   labelText: "Medicine Name",
                                   controller: controller
-                                      .medicineNameController, // no Obx
+                                      .medicineNameController,
                                 ),
                                 Obx(
                                   () => CustomDropDown(

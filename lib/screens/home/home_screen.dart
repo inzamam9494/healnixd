@@ -112,7 +112,7 @@ class HomeScreen extends GetView<HomeController> {
               )),
             ),
             Container(
-              height: 160.sp,
+              height: 200.sp,
               width: double.infinity,
               margin: EdgeInsets.symmetric(vertical: 16.0),
               decoration: BoxDecoration(
