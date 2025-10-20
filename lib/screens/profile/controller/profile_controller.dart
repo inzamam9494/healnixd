@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:healnixd/routes/routes.dart';
 import 'package:healnixd/utils/const_toast.dart';
 import 'package:healnixd/utils/custom_snack_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileController extends GetxController {
   var userId = "".obs;
@@ -38,9 +40,11 @@ class ProfileController extends GetxController {
       await FirebaseAuth.instance.signOut();
       userId.value = "";
       userEmail.value = "";
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
       // ConstToast().showSuccess("Logged out successfully");
       CustomSnackBar.success("Logged out successfully");
-      Get.offAllNamed('/');
+      Get.offAllNamed(ApplicationRoutes.splashScreen);
     } catch (err) {
       debugPrint("Logout Error: $err");
       // ConstToast().showError("Failed to logout");

@@ -130,6 +130,7 @@ class ProfileScreen extends GetView<ProfileController> {
                       onTap: (){
                         Get.dialog(
                         AlertDialog(
+                          backgroundColor: Colors.white,
                           title: Text("Are you sure you want to log out?", style: AppTextStyles.kCaption12SemiBoldTextStyle,),
                           actions: [
                             dialogButton(

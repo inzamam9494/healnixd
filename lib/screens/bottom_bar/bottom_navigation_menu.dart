@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:healnixd/components/exit_confirmation.dart';
 import 'package:healnixd/screens/bottom_bar/controller/bottom_nav_controller.dart';
 
 class BottomNavigationMenu extends GetView<BottomNavController> {
@@ -9,23 +10,25 @@ class BottomNavigationMenu extends GetView<BottomNavController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Scaffold(
-        backgroundColor: Colors.blue.shade50,
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 52.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(80.0)),
-            child: NavigationBar(
-              backgroundColor: Colors.black,
-              destinations: [
-                _buildNavBarItem(Icons.add_home_outlined, 0),
-                _buildNavBarItem(Icons.medication_liquid_sharp, 1),
-                _buildNavBarItem(CupertinoIcons.person, 2),
-              ],
+      () => ExitConfirmation(
+        child: Scaffold(
+          backgroundColor: Colors.blue.shade50,
+          bottomNavigationBar: Padding(
+            padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 52.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(80.0)),
+              child: NavigationBar(
+                backgroundColor: Colors.black,
+                destinations: [
+                  _buildNavBarItem(Icons.add_home_outlined, 0),
+                  _buildNavBarItem(Icons.medication_liquid_sharp, 1),
+                  _buildNavBarItem(CupertinoIcons.person, 2),
+                ],
+              ),
             ),
           ),
+          body: controller.screens[controller.currentIndex.value],
         ),
-        body: controller.screens[controller.currentIndex.value],
       ),
     );
   }

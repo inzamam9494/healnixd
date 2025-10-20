@@ -11,12 +11,15 @@ class RegisterController extends GetxController {
   var registerNameController = TextEditingController().obs;
   var registerEmailController = TextEditingController().obs;
   var registerPasswordController = TextEditingController().obs;
+  var registerPhoneController = TextEditingController().obs;
   var isVisiblePassword = false.obs;
   var isLoading = false.obs;
   var isChecked = false.obs;
   final formKey = GlobalKey<FormState>();
+  String? _verificationId;
 
   // Firebase Auth instance can be added here for sign up functionality
+  // sign up with email
   Future<void> signUp() async {
     final name = registerNameController.value.text.trim();
     final email = registerEmailController.value.text.trim();
@@ -63,5 +66,84 @@ class RegisterController extends GetxController {
         isLoading.value = false;
       }
     }
+  }
+
+  // verify by mobile number
+  Future<void> _verifyPhoneNumber(String phoneNumber) async {
+    isLoading.value = true;
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phoneNumber,
+        timeout: const Duration(seconds: 60),
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          final user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            try {
+              await user.linkWithCredential(credential);
+              await _saveUserDataToFirestore(user.uid, phoneNumber);
+              CustomSnackBar.success("Phone Number Verified");
+              Get.toNamed(ApplicationRoutes.onboardingScreen);
+            } catch (e) {
+              await FirebaseAuth.instance.signInWithCredential(credential);
+            }
+          }
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          CustomSnackBar.error("Phone verification failed : ${e.message}");
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          _verificationId = verificationId;
+          Get.toNamed(
+            ApplicationRoutes.otpVerificationScreen,
+            arguments: {'verificationId': verificationId, 'phone': phoneNumber},
+          );
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          _verificationId = verificationId;
+        },
+      );
+    } catch (err) {
+      CustomSnackBar.error("Failed to send OTP : ${err.toString()}");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> linkWithOtp(
+    String smsCode,
+    String verificationId,
+    String phoneNumber,
+  ) async {
+    isLoading.value = true;
+    try {
+      final credential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await user.linkWithCredential(credential);
+        await _saveUserDataToFirestore(user.uid, phoneNumber);
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('phone', phoneNumber);
+        CustomSnackBar.success("Phone Number Verified");
+        Get.toNamed(ApplicationRoutes.onboardingScreen);
+      } else{
+        await FirebaseAuth.instance.signInWithCredential(credential);
+        final u = FirebaseAuth.instance.currentUser;
+        await _saveUserDataToFirestore(u!.uid, phoneNumber);
+        Get.toNamed(ApplicationRoutes.onboardingScreen);
+      }
+    } catch (err) {
+      CustomSnackBar.error("Failed to verify OTP : ${err.toString()}");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+  Future<void> _saveUserDataToFirestore(String uid, String phoneNumber) async{
+    await FirebaseFirestore.instance.collection('user').doc(uid).update({
+      'phone': phoneNumber,
+      'phoneVerifiedAt': FieldValue.serverTimestamp(),
+    });
   }
 }

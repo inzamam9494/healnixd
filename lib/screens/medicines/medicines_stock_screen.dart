@@ -614,66 +614,68 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                               'Edit Medicine',
                               style: AppTextStyles.kCaption12SemiBoldTextStyle,
                             ),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                addDialogTextField(
-                                  labelText: "Medicine Name",
-                                  controller: controller
-                                      .medicineNameController,
-                                ),
-                                Obx(
-                                  () => CustomDropDown(
-                                    labelText: "Select Quantity",
-                                    items: [(controller.bottleSize.value)],
-                                    onChanged: null,
-                                    selectedValue: controller
-                                        .selectQuantity
-                                        .value, // make sure dropdown shows current value
+                            content: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  addDialogTextField(
+                                    labelText: "Medicine Name",
+                                    controller: controller
+                                        .medicineNameController,
                                   ),
-                                ),
-                                Obx(
-                                  () => CustomDropDown(
-                                    labelText: "Potency",
-                                    items: ["30C", "200C", "1000C", "1M"],
-                                    onChanged: (val) {
-                                      controller.potency.value = val!;
+                                  Obx(
+                                    () => CustomDropDown(
+                                      labelText: "Select Quantity",
+                                      items: [(controller.bottleSize.value)],
+                                      onChanged: null,
+                                      selectedValue: controller
+                                          .selectQuantity
+                                          .value, // make sure dropdown shows current value
+                                    ),
+                                  ),
+                                  Obx(
+                                    () => CustomDropDown(
+                                      labelText: "Potency",
+                                      items: ["30C", "200C", "1000C", "1M"],
+                                      onChanged: (val) {
+                                        controller.potency.value = val!;
+                                      },
+                                      selectedValue: controller.potency.value,
+                                    ),
+                                  ),
+                                  Obx(
+                                    () => CustomDropDown(
+                                      labelText: "Bottle Size",
+                                      items: ["30", "100", "500"],
+                                      onChanged: (val) {
+                                        controller.bottleSize.value = val!;
+                                        controller.selectQuantity.value = val;
+                                      },
+                                      selectedValue: controller.bottleSize.value,
+                                    ),
+                                  ),
+                                  addDialogTextField(
+                                    controller: controller.expiryDate,
+                                    // no Obx
+                                    labelText: "Expiry Date",
+                                    suffixIcon: Icons.calendar_month,
+                                    iconTap: () async {
+                                      DateTime? pickDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2100),
+                                      );
+                                      if (pickDate != null) {
+                                        String formattedDate =
+                                            "${pickDate.day}-${pickDate.month}-${pickDate.year}";
+                                        controller.expiryDate.text =
+                                            formattedDate;
+                                      }
                                     },
-                                    selectedValue: controller.potency.value,
                                   ),
-                                ),
-                                Obx(
-                                  () => CustomDropDown(
-                                    labelText: "Bottle Size",
-                                    items: ["30", "100", "500"],
-                                    onChanged: (val) {
-                                      controller.bottleSize.value = val!;
-                                      controller.selectQuantity.value = val;
-                                    },
-                                    selectedValue: controller.bottleSize.value,
-                                  ),
-                                ),
-                                addDialogTextField(
-                                  controller: controller.expiryDate,
-                                  // no Obx
-                                  labelText: "Expiry Date",
-                                  suffixIcon: Icons.calendar_month,
-                                  iconTap: () async {
-                                    DateTime? pickDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime(2100),
-                                    );
-                                    if (pickDate != null) {
-                                      String formattedDate =
-                                          "${pickDate.day}-${pickDate.month}-${pickDate.year}";
-                                      controller.expiryDate.text =
-                                          formattedDate;
-                                    }
-                                  },
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                             actions: [
                               dialogButton(
@@ -696,16 +698,22 @@ class MedicinesStockScreen extends GetView<MedicinesStockController> {
                         );
                       },
                       onTapDelete: () {
+                        controller.populateFieldsForEdit({
+                          'medicineName': medicine['medicineName'],
+                          'bottleSize': medicine['bottleSize'],
+                          'potency': medicine['potency'],
+                          'expiryDate': medicine['expiryDate'],
+                        });
                         Get.dialog(
                           AlertDialog(
                             backgroundColor: Colors.white,
                             title: Text(
                               "Delete Medicine",
-                              style: AppTextStyles.kBody15SemiBoldTextStyle,
+                              style: AppTextStyles.kBody15SemiBoldTextStyle.copyWith(color: Colors.red),
                             ),
                             content: Text(
-                              "Are you sure you want to delete *Arnica Montana*?",
-                              style: AppTextStyles.kCaption12SemiBoldTextStyle,
+                              "Are you sure you want to delete ${medicine['medicineName']} ${medicine['potency']}?",
+                              style: AppTextStyles.kBody15SemiBoldTextStyle,
                             ),
                             actions: [
                               dialogButton(

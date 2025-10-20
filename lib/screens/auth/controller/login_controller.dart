@@ -7,6 +7,7 @@ import 'package:healnixd/style/text_style.dart';
 import 'package:healnixd/utils/const_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:healnixd/utils/custom_snack_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class LoginController extends GetxController{
@@ -31,6 +32,9 @@ class LoginController extends GetxController{
       try{
         await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
         debugPrint("Login UID : ${FirebaseAuth.instance.currentUser?.uid}");
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('email', email);
+        await prefs.setString('password', password);
         // ConstToast().showSuccess("Logged in successfully");
         CustomSnackBar.success("Logged in successfully");
         Get.toNamed(ApplicationRoutes.bottomNavigationMenu);
