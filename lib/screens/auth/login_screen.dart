@@ -34,7 +34,7 @@ class LoginScreen extends GetView<LoginController> {
                     "Welcome back! Log in to access your medicine services easily",
                     style: AppTextStyles.kSmall10RegularTextStyle,
                   ).marginOnly(bottom: 20.0),
-                  authHeadingText(text: "Email or Mobile Number"),
+                  authHeadingText(text: "Email Address"),
                   CustomTextField(
                     controller: controller.loginEmailController,
                     validator: (value) {

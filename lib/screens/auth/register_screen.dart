@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:healnixd/components/custom_texts.dart';
@@ -58,6 +57,18 @@ class RegisterScreen extends GetView<RegisterController> {
                         return null;
                       },
                     ),
+                    // CustomTextField(
+                    //   controller: controller.registerPhoneController.value,
+                    //   validator: (value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return 'Please enter your mobile number';
+                    //     }
+                    //     if (!RegExp(r'^\+?\d{7,15}$').hasMatch(value)) {
+                    //       return 'Please enter a valid phone number';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
                     authHeadingText(text: "Enter new password"),
                     CustomTextField(
                       controller: controller.registerPasswordController.value,
@@ -108,7 +119,10 @@ class RegisterScreen extends GetView<RegisterController> {
                       isLoading: controller.isLoading.value,
                       onPressed: () {
                         controller.signUp();
-                        // Get.toNamed(ApplicationRoutes.onboardingScreen);
+                        // if(controller.formKey.currentState?.validate() ?? false){
+                        //   controller.verifyPhone();
+                        // }
+                        // Get.toNamed(ApplicationRoutes.otpVerificationScreen);
                       },
                     ).marginOnly(top: 70.0, bottom: 20.0),
                     SizedBox(

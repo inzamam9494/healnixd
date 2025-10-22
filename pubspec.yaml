@@ -48,6 +48,7 @@ dependencies:
   email_auth: ^2.0.0
   http: ^1.5.0
   flutter_launcher_icons: ^0.14.4
+  lottie: ^3.3.2
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +81,9 @@ flutter:
   assets:
     - assets/images/google.png
     - assets/images/healnixd.jpg
+    - assets/animation/1.json
+    - assets/animation/2.json
+    - assets/animation/3.json
   #   - images/a_dot_ham.jpeg
 
 

@@ -34,13 +34,19 @@ class RegisterController extends GetxController {
     if (formKey.currentState!.validate()) {
       isLoading.value = true;
       try {
+        final UserCredential cred =
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
 
+        final uid = cred.user?.uid;
+        if (uid == null || uid.isEmpty) {
+          CustomSnackBar.error("Failed to get user id after signup");
+          return;
+        }
         // save user data in Firestore
-        String uid = FirebaseAuth.instance.currentUser!.uid;
+        // String uid = FirebaseAuth.instance.currentUser!.uid;
         await FirebaseFirestore.instance.collection('user').doc(uid).set({
           'name': name,
           'email': email,
@@ -67,6 +73,21 @@ class RegisterController extends GetxController {
       }
     }
   }
+
+
+  Future<void> verifyPhone() async {
+    final phone = registerPhoneController.value.text.trim();
+    if (phone.isEmpty) {
+      CustomSnackBar.info("Please enter your mobile number");
+      return;
+    }
+    if (!RegExp(r'^\+?\d{7,15}$').hasMatch(phone)) {
+      CustomSnackBar.info("Please enter a valid phone number");
+      return;
+    }
+    await _verifyPhoneNumber(phone);
+  }
+
 
   // verify by mobile number
   Future<void> _verifyPhoneNumber(String phoneNumber) async {
